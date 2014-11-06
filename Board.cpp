@@ -719,7 +719,7 @@ Cell* Board::choiceLaser()
 		cout << "1. Attack 2. Stun\n";
 		cout << ">> ";
 		getline(cin,choice);
-		if((choice.at(0) != 49 && choice.at(0) != 50)||choice.size() != 1)
+		if(choice.size() != 1 || (choice.at(0) != 49 && choice.at(0) != 50))
 		{
 						cout << "[System] Please correct choice!\n";
 						continue;
@@ -871,7 +871,7 @@ void Board::startGame()
                     cout << ">> ";
                     getline(cin,choice);
                     cout << "\n";
-                    if(choice.at(0) != 49 || choice.size() != 1)
+                    if(choice.size() != 1 || choice.at(0) != 49)
                     {
                         cout << "[System] Please correct choice!\n";
                         continue;
@@ -890,7 +890,7 @@ void Board::startGame()
                     cout << "1. Rotate\n";
                     cout << ">> ";
                     getline(cin,choice);
-                    if(choice.at(0) != 49 || choice.size() != 1)
+                    if(choice.size() != 1 || choice.at(0) != 49 )
                     {
                         cout << "[System] Please correct choice!\n";
                         continue;
@@ -911,7 +911,7 @@ void Board::startGame()
                     cout << "1. Move 2. Rotate\n";
                     cout << ">> ";
                     getline(cin,choice);
-                    if((choice.at(0) != 49 && choice.at(0) != 50) || choice.size() != 1)
+                    if(choice.size() != 1 || (choice.at(0) != 49 && choice.at(0) != 50) )
                     {
                         cout << "[System] Please correct choice!\n";
                         continue;
@@ -935,7 +935,7 @@ void Board::startGame()
                     cout << "1. Move 2. Rotate\n";
                     cout << ">> ";
                     getline(cin,choice);
-                    if((choice.at(0) != 49 && choice.at(0) != 50)||choice.size() != 1)
+                    if(choice.size() != 1 || (choice.at(0) != 49 && choice.at(0) != 50))
                     {
                         cout << "[System] Please correct choice!\n";
                         continue;
@@ -959,7 +959,7 @@ void Board::startGame()
                     cout << "1. Rotate\n";
                     cout << ">> ";
                     getline(cin,choice);
-                    if(choice.at(0) != 49 || choice.size() != 1)
+                    if( choice.size() != 1 || choice.at(0) != 49 )
                     {
                         cout << "[System] Please correct choice!\n";
                         continue;

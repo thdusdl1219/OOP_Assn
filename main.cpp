@@ -13,6 +13,7 @@ int main()
 				if(choise.size() != 1 || choise.at(0) < 49 || choise.at(0) > 50)
 				{
             cout << "You should choose 1 or 2\n";
+			continue;
 				}
         if(choise.at(0) == 49)
         {
