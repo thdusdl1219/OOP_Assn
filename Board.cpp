@@ -72,6 +72,10 @@ Cell* Board::launchLaser(Cell* _startcell )
                     if(check2 != NULL)
 										{
 												result = check2;
+												if(result->getUnit() == BLOCKMIRROR && status->getBeamdir() != tmpdir)
+												{
+														result = NULL;
+												}
                         break;
 										}
                     if(status->getBeamdir() != tmpdir) // 중간에 빔이 반사되거나 하는 이유로 빔의 방향이 바뀌게 되면 check를 1로 변화시켜서 다시 루프에 빠지게 만든다.
@@ -89,7 +93,12 @@ Cell* Board::launchLaser(Cell* _startcell )
                      if(check2 != NULL)
 										 {
 												result = check2;
+  												if(result->getUnit() == BLOCKMIRROR && status->getBeamdir() != tmpdir)
+												{
+														result = NULL;
+												}
                         break;
+                      break;
 										 }
                    if(status->getBeamdir() != tmpdir)
                     {
@@ -106,7 +115,12 @@ Cell* Board::launchLaser(Cell* _startcell )
                       if(check2 != NULL)
 											{
 												result = check2;
+ 												if(result->getUnit() == BLOCKMIRROR && status->getBeamdir() != tmpdir)
+												{
+														result = NULL;
+												}
                         break;
+                       break;
 											}
                   if(status->getBeamdir() != tmpdir)
                     {
@@ -123,7 +137,12 @@ Cell* Board::launchLaser(Cell* _startcell )
                      if(check2 != NULL)
 										 {
 												result = check2;
+ 												if(result->getUnit() == BLOCKMIRROR && status->getBeamdir() != tmpdir)
+												{
+														result = NULL;
+												}
                         break;
+                       break;
 										 }
                    if(status->getBeamdir() != tmpdir)
                     {
@@ -141,13 +160,24 @@ Cell* Board::launchLaser(Cell* _startcell )
 
 		return result;
 }
+
+void Board::Stun(Cell* _cell)
+{
+
+    char tmpcol = _cell->getcol() + 49;
+    char tmprow = _cell->getrow() + 65;
+		cout << "[System] Player "<< _cell->getUnitTeam() <<"'s Unit at ("<< tmprow <<" "<< tmpcol <<") is in stun." << endl;
+		_cell->setUnitstun(true);
+		_cell->getUni()->setturn(0);
+
+}
 /* 빔이 작용하는 셀에 존재하는 유닛의 조건에 따라 어떠한 행동을 취해야 하는지를 정하는 함수 */
 Cell* Board::beamCurCell(Cell* _cell)
 {
     char tmprow = _cell->getrow() + 65;
     char tmpcol = _cell->getcol() + 49;
-    int kteam = _cell->getUnitTeam();
     Cell* result = NULL;
+		Cell* remove = NULL;
     switch((int)_cell->getUnit()) // 유닛에 따라 나눈다.
     {
         case 0:
@@ -156,15 +186,10 @@ Cell* Board::beamCurCell(Cell* _cell)
         case 1:
 					if(status->getattack())
 					{
-           static_cast<King *>(_cell->getUni())->set_enable(false); // 왕 죽음
-          cout << "[Laser] King of Player " << kteam << " is defeated." << endl;
+           static_cast<King *>(_cell->getUni())->set_enable(false, _cell->getUnitTeam()); // 왕 죽음
 					}
 					else
-					{
-						cout << "[System] Player "<< _cell->getUnitTeam() <<"'s Unit at ("<< tmprow <<" "<< tmpcol <<" ) is in stun." << endl;
-						_cell->setUnitstun(true);
-						_cell->getUni()->setturn(0);
-					}
+						Stun(_cell);
 					result = _cell;
           break;
         case 3:
@@ -175,20 +200,17 @@ Cell* Board::beamCurCell(Cell* _cell)
                   {
 											if(status->getattack())
 											{
-                      	cout << "[Laser] BlockMirror " << tmprow << " "<<tmpcol<<" is destroyed." << endl;									
+												cout << "[System] Player "<< _cell->getUnitTeam() <<"'s Unit at ("<< tmprow <<" "<< tmpcol <<") is in destroyed." << endl;
 											}
 											else
-											{
-												cout << "[System] Player "<< _cell->getUnitTeam() <<"'s Unit at ("<< tmprow <<" "<< tmpcol <<" ) is in stun." << endl;
-												_cell->setUnitstun(true);
-												_cell->getUni()->setturn(0);
-											}
+												Stun(_cell);
 											result = _cell;
                   }
                   else
                   {
                       cout << "[System] BlockMirror blocked laser" << endl;
 											status->setBeamdir(UP);
+											result = _cell;
                   }
                   break;
               case DOWN:
@@ -196,20 +218,17 @@ Cell* Board::beamCurCell(Cell* _cell)
                   {
 											if(status->getattack())
 											{
-                      	cout << "[Laser] BlockMirror " << tmprow << " "<<tmpcol<<" is destroyed." << endl;
+												cout << "[System] Player "<< _cell->getUnitTeam() <<"'s Unit at ("<< tmprow <<" "<< tmpcol <<") is in destroyed." << endl;
 											}
 											else
-											{
-												cout << "[System] Player "<< _cell->getUnitTeam() <<"'s Unit at ("<< tmprow <<" "<< tmpcol <<" ) is in stun." << endl;
-												_cell->setUnitstun(true);
-												_cell->getUni()->setturn(0);
-											}
+												Stun(_cell);
 											result = _cell;
                   }
                   else
                   {
                       cout << "[System] BlockMirror blocked laser" << endl;
 											status->setBeamdir(DOWN);
+											result = _cell;
                   }
                  break;
               case LEFT:
@@ -217,20 +236,17 @@ Cell* Board::beamCurCell(Cell* _cell)
                   {
 											if(status->getattack())
 											{
-                      	cout << "[Laser] BlockMirror " << tmprow << " "<<tmpcol<<" is destroyed." << endl;
+												cout << "[System] Player "<< _cell->getUnitTeam() <<"'s Unit at ("<< tmprow <<" "<< tmpcol <<") is in destroyed." << endl;
 											}
 											else
-											{
-												cout << "[System] Player "<< _cell->getUnitTeam() <<"'s Unit at ("<< tmprow <<" "<< tmpcol <<" ) is in stun." << endl;
-												_cell->setUnitstun(true);
-												_cell->getUni()->setturn(0);
-											}
+												Stun(_cell);
 											result = _cell;
                   }
                   else
                   {
                       cout << "[System] BlockMirror blocked laser" << endl;
 											status->setBeamdir(LEFT);
+											result = _cell;
                   }
                  break;
               case RIGHT:
@@ -238,20 +254,17 @@ Cell* Board::beamCurCell(Cell* _cell)
                   {
 											if(status->getattack())
 											{
-                      	cout << "[Laser] BlockMirror " << tmprow << " "<<tmpcol<<" is destroyed." << endl;
+												cout << "[System] Player "<< _cell->getUnitTeam() <<"'s Unit at ("<< tmprow <<" "<< tmpcol <<") is in destroyed." << endl;
 											}
 											else
-											{
-												cout << "[System] Player "<< _cell->getUnitTeam() <<"'s Unit at ("<< tmprow <<" "<< tmpcol <<" ) is in stun." << endl;
-												_cell->setUnitstun(true);
-												_cell->getUni()->setturn(0);
-											}
+												Stun(_cell);
 											result = _cell;
                   }
                   else
                   {
                       cout << "[System] BlockMirror blocked laser" << endl;
 											status->setBeamdir(RIGHT);
+											result = _cell;
                   }
                  break;
           }
@@ -263,13 +276,9 @@ Cell* Board::beamCurCell(Cell* _cell)
                   if(status->getBeamdir() == DOWN || status->getBeamdir() == LEFT)
                   {
 											if(status->getattack())
-	                      cout << "[Laser] TriMirror " << tmprow << " " << tmpcol<<" is destroyed." << endl;
+												cout << "[System] Player "<< _cell->getUnitTeam() <<"'s Unit at ("<< tmprow <<" "<< tmpcol <<") is in destroyed." << endl;
 											else
-											{
-												cout << "[System] Player "<< _cell->getUnitTeam() <<"'s Unit at ("<< tmprow <<" "<< tmpcol <<" ) is in stun." << endl;
-												_cell->setUnitstun(true);
-												_cell->getUni()->setturn(0);
-											}
+												Stun(_cell);
 											result = _cell;
                   }
                   else if(status->getBeamdir() == UP)
@@ -282,13 +291,9 @@ Cell* Board::beamCurCell(Cell* _cell)
                   {
                       result = _cell;
 											if(status->getattack())
-	                      cout << "[Laser] TriMirror " << tmprow << " " << tmpcol<<" is destroyed." << endl;
+												cout << "[System] Player "<< _cell->getUnitTeam() <<"'s Unit at ("<< tmprow <<" "<< tmpcol <<") is in destroyed." << endl;
 											else
-											{
-												cout << "[System] Player "<< _cell->getUnitTeam() <<"'s Unit at ("<< tmprow <<" "<< tmpcol <<" ) is in stun." << endl;
-												_cell->setUnitstun(true);
-												_cell->getUni()->setturn(0);
-											}
+												Stun(_cell);	
                   }
                   else if(status->getBeamdir() == UP)
                       status->setBeamdir(RIGHT);
@@ -300,13 +305,9 @@ Cell* Board::beamCurCell(Cell* _cell)
                   {
                       result = _cell;
 											if(status->getattack())
-	                      cout << "[Laser] TriMirror " << tmprow << " " << tmpcol<<" is destroyed." << endl;
+												cout << "[System] Player "<< _cell->getUnitTeam() <<"'s Unit at ("<< tmprow <<" "<< tmpcol <<") is in destroyed." << endl;
 											else
-											{
-												cout << "[System] Player "<< _cell->getUnitTeam() <<"'s Unit at ("<< tmprow <<" "<< tmpcol <<" ) is in stun." << endl;
-												_cell->setUnitstun(true);
-												_cell->getUni()->setturn(0);
-											}
+												Stun(_cell);	
                   }
                   else if(status->getBeamdir() == DOWN)
                       status->setBeamdir(RIGHT);
@@ -318,13 +319,9 @@ Cell* Board::beamCurCell(Cell* _cell)
                   {
                       result = _cell;
 											if(status->getattack())
-	                      cout << "[Laser] TriMirror " << tmprow << " " << tmpcol<<" is destroyed." << endl;
+												cout << "[System] Player "<< _cell->getUnitTeam() <<"'s Unit at ("<< tmprow <<" "<< tmpcol <<") is in destroyed." << endl;
 											else
-											{
-												cout << "[System] Player "<< _cell->getUnitTeam() <<"'s Unit at ("<< tmprow <<" "<< tmpcol <<" ) is in stun." << endl;
-												_cell->setUnitstun(true);
-												_cell->getUni()->setturn(0);
-											}
+												Stun(_cell);	
                   }
                   else if(status->getBeamdir() == DOWN)
                       status->setBeamdir(LEFT);
@@ -358,6 +355,124 @@ Cell* Board::beamCurCell(Cell* _cell)
                   break;
           }
           break;
+        case 7:
+          switch((int)_cell->getUnitDir())
+          {
+              case 1:
+                  if(status->getBeamdir() == DOWN || status->getBeamdir() == LEFT)
+                  {
+											if(status->getattack())
+												cout << "[System] Player "<< _cell->getUnitTeam() <<"'s Unit at ("<< tmprow <<" "<< tmpcol <<") is in destroyed." << endl;
+											else
+												Stun(_cell);	
+											result = _cell;
+                  }
+                  else if(status->getBeamdir() == UP)
+									{
+											remove = launchLaser(_cell);
+											if(remove != NULL && status->getattack())
+											{				
+												remove->setseam(true);
+											}
+                      status->setBeamdir(LEFT); // 빔의 방향을 바꾼다. -> 반사시킨다.
+									}
+                  else
+									{
+											remove = launchLaser(_cell);
+ 											if(remove != NULL && status->getattack())
+											{			
+												remove->setseam(true);
+											}
+                     status->setBeamdir(DOWN);
+									}
+                  break;
+              case 2:
+                   if(status->getBeamdir() == DOWN || status->getBeamdir() == RIGHT)
+                  {
+                      result = _cell;
+											if(status->getattack())
+												cout << "[System] Player "<< _cell->getUnitTeam() <<"'s Unit at ("<< tmprow <<" "<< tmpcol <<") is in destroyed." << endl;
+											else
+												Stun(_cell);	
+                  }
+                  else if(status->getBeamdir() == UP)
+									{
+											remove = launchLaser(_cell);
+ 											if(remove != NULL && status->getattack())
+											{				
+												remove->setseam(true);
+											}
+                     status->setBeamdir(RIGHT);
+									}
+                  else
+									{
+											remove = launchLaser(_cell);
+ 											if(remove != NULL && status->getattack())
+											{				
+												remove->setseam(true);
+											}
+                     status->setBeamdir(DOWN);
+									}
+                 break;
+              case 3:
+                   if(status->getBeamdir() == UP || status->getBeamdir() == RIGHT)
+                  {
+                      result = _cell;
+											if(status->getattack())
+												cout << "[System] Player "<< _cell->getUnitTeam() <<"'s Unit at ("<< tmprow <<" "<< tmpcol <<") is in destroyed." << endl;
+											else
+												Stun(_cell);	
+                  }
+                  else if(status->getBeamdir() == DOWN)
+									{
+											remove = launchLaser(_cell);
+ 											if(remove != NULL && status->getattack())
+											{				
+												remove->setseam(true);
+											}
+                     status->setBeamdir(RIGHT);
+									}
+                  else
+									{
+											remove = launchLaser(_cell);
+ 											if(remove != NULL && status->getattack())
+											{				
+												remove->setseam(true);
+											}
+                     status->setBeamdir(UP);
+									}
+                  break;
+              case 4:
+                   if(status->getBeamdir() == UP || status->getBeamdir() == LEFT)
+                  {
+                      result = _cell;
+											if(status->getattack())
+												cout << "[System] Player "<< _cell->getUnitTeam() <<"'s Unit at ("<< tmprow <<" "<< tmpcol <<") is in destroyed." << endl;
+											else
+												Stun(_cell);	
+                  }
+                  else if(status->getBeamdir() == DOWN)
+									{
+											remove = launchLaser(_cell);
+ 											if(remove != NULL && status->getattack())
+											{				
+												remove->setseam(true);
+											}
+                     status->setBeamdir(LEFT);
+									}
+                  else
+									{
+											remove = launchLaser(_cell);
+ 											if(remove != NULL && status->getattack())
+											{				
+												remove->setseam(true);
+											}
+                     status->setBeamdir(UP);
+									}
+                 break;
+          }
+          break;
+
     }
     return result;
 }
@@ -445,142 +560,60 @@ void Board::initGame()
     laser[3] = static_cast<Laser *>(cell[80]->getUni());
     cout << "[System] Complete Initializing.\n";
 }
-/* 게임을 진행하는 메인 함수 */
-void Board::startGame()
+
+void Board::UnitMove(Cell** curcell)
 {
-
-    initGame();
-    showBoard();
-    while(1)
-    {
-
-        int check = 0, i;
-        int turn = ongoingTeam;
-        Cell** curcell;
-        enum UnitType curunit;
-        string choice;
-        string input;
-				Cell* remove;
-        cout << "Player " << turn << "'s Turn !\n";
-        while(1)
-        {
-            cout << "Which Unit do you want to control?\n";
-            cout << ">> ";
-            getline(cin,input);
-            if(input.size() != 3 || input.at(0) < 65 || input.at(0) > 105 || (input.at(0) > 73 && input.at(0) < 97) || input.at(1) != 32 || input.at(2) < 49 || input.at(2) > 57)
-            { // 잘못된 입력
-                cout << "[System] Input Format of position is \"Row Col\".\n";
-                cout << "         ex) D 4, e 2, or etc.\n"; 
-                continue;
-            }
-            else
-            {
-                if(input.at(0) > 96)
-                    input.at(0) -= 32;
-                curcell = &cell[(input.at(0)-65)*9 + (input.at(2)-49)];
-                enum Team unitteam = (*curcell)->getUnitTeam();
-                curunit = (*curcell)->getUnit();
-                if(curunit != NONE) // 컨트롤 할 유닛을 선택한다.
-                {
-                    if(unitteam == ongoingTeam)
-                    {
-                        cout << "\n";
-												if((*curcell)->getUnitstun())
+				int turn = ongoingTeam;
+				string input;
+				while(1)
+				{
+								cout << "Which Position do you want it to move?\n"; // 유닛을 이동시킨다.
+								cout << ">> ";
+								getline(cin,input);
+								cout << "\n";
+								if(input.size() != 3 || input.at(0) < 65 || input.at(0) > 105 || (input.at(0) > 73 && input.at(0) < 97) || input.at(1) != 32 || input.at(2) < 49 || input.at(2) > 57)
+								{
+												cout << "[System] Input Format of position is \"Row Col\".\n";
+												cout << "         ex) D 4, e 2, or etc.\n"; 
+												continue;
+								}
+								else
+								{
+												if(input.at(0) > 96)
+																input.at(0) -= 32;
+												Cell** movTo = &cell[(input.at(0)-65)*9 + (input.at(2)-49)];
+												if((*movTo)->getrow() <= (*curcell)->getrow()+1 && (*movTo)->getrow() >= (*curcell)->getrow()-1 && (*movTo)->getcol() <= (*curcell)->getcol()+1 && (*movTo)->getcol() >= (*curcell)->getcol()-1)
 												{
-														cout << "The Unit is in stun!!\n";
-														continue;
+																if((*movTo)->movableTo())
+																{
+																				swap(*curcell,*movTo);
+																				cout << endl;
+																				char tmprow = (*curcell)->getrow() + 65;
+																				char tmpcol = (*curcell)->getcol() + 49;
+																				cout << "[Log] Player"<< turn <<": " << tmprow << " " << tmpcol << " => " << input.at(0) << " " << input.at(2) << endl; 
+																				break;
+																}
+																else
+																{
+																				cout << "[System] You can't move your Unit to there\n";
+																				continue;
+																}
 												}
-                        break;
-                    }
-                    else
-                    {
-                        cout << "You can't control other's Unit!\n";
-                        continue;
-                    }
-                }
-                else
-                {
-                    cout << "You can't control empty space :)\n";
-                    continue;
-                }
-            }
-        }
-        switch((int)curunit) // 유닛의 종류에 따라 나눈다.
-        {
-            case 1: // 왕
-                while(1)
-                {
-                    cout << "What's your Command of this unit?\n"; // 유닛을 어떻게 컨트롤할지 결정한다.
-                    cout << "1. Move\n";
-                    cout << ">> ";
-                    getline(cin,choice);
-                    cout << "\n";
-                    if(choice.at(0) != 49 || choice.size() != 1)
-                    {
-                        cout << "Please correct choice!\n";
-                        continue;
-                    }
-                    else
-                    {
-                        while(1)
-                        {
-                            cout << "Which Position do you want it to move?\n"; // 유닛을 이동시킨다.
-                            cout << ">> ";
-                            getline(cin,input);
-                            cout << "\n";
-                            if(input.size() != 3 || input.at(0) < 65 || input.at(0) > 105 || (input.at(0) > 73 && input.at(0) < 97) || input.at(1) != 32 || input.at(2) < 49 || input.at(2) > 57)
-                            {
-                                cout << "[System] Input Format of position is \"Row Col\".\n";
-                                cout << "         ex) D 4, e 2, or etc.\n"; 
-                                continue;
-                            }
-                            else
-                            {
-                                if(input.at(0) > 96)
-                                    input.at(0) -= 32;
-                                Cell** movTo = &cell[(input.at(0)-65)*9 + (input.at(2)-49)];
-                                if((*movTo)->getrow() <= (*curcell)->getrow()+1 && (*movTo)->getrow() >= (*curcell)->getrow()-1 && (*movTo)->getcol() <= (*curcell)->getcol()+1 && (*movTo)->getcol() >= (*curcell)->getcol()-1)
-                                {
-                                    if((*movTo)->movableTo())
-                                    {
-                                        swap(*curcell,*movTo);
-                                        cout << endl;
-                                        char tmprow = (*curcell)->getrow() + 65;
-                                        char tmpcol = (*curcell)->getcol() + 49;
-                                        cout << "[Log] Player"<< turn <<": " << tmprow << " " << tmpcol << " => " << input.at(0) << " " << input.at(2) << endl; 
-                                        break;
-                                    }
-                                    else
-                                    {
-                                        cout << "You can't move your Unit to there\n";
-                                        continue;
-                                    }
-                                }
-                                else
-                                {
-                                         cout << "You can't move your Unit to there\n";
-                                        continue;                                   
-                                }
-                            }
-                        }
-                        break;
-                    }
-                }
-                break;
-            case 2: // 레이저
-                while(1)
-                {
-                    cout << "What's your Command of this unit?\n";
-                    cout << "1. Rotate\n";
-                    cout << ">> ";
-                    getline(cin,choice);
-                    if(choice.at(0) != 49 || choice.size() != 1)
-                    {
-                        cout << "Please correct choice!\n";
-                        continue;
-                    }
-                    else
-                    {
+												else
+												{
+																cout << "[System] You can't move your Unit to there\n";
+																continue;                                   
+												}
+								}
+				}
+
+}
+
+int Board::Rotate_only(Cell** curcell)
+{
+				int check = 0;
+				int turn = ongoingTeam;
+				string choice;
                         while(1)
                         {
                             enum Direction curdir = (*curcell)->getUnitDir(); 
@@ -590,7 +623,7 @@ void Board::startGame()
                             getline(cin,choice);
                             if(choice.size() != 1)
                             {
-                                cout << "Please correct choice!\n";
+                                cout << "[System] Please correct choice!\n";
                                 continue;
                             }
                             if(choice.at(0) == 49)
@@ -611,319 +644,97 @@ void Board::startGame()
                             }
                             else if(choice.at(0) == 50)
                             {
-                                cout << "Don't rotate!\n";
+                                cout << "[System] Don't rotate!\n";
                                 check = 1;
                                 break;
                             }
                             else
                             {
-                                cout << "You should input 1 or 2\n";
+                                cout << "[System] You should input 1 or 2\n";
                                 continue;
                             }
                         }
-                        break;
-                    }
-                }
-                break;
-            case 3: // 블락미러
-            case 4: // 삼각미러
-                while(1)
-                {
-                    cout << "What's your Command of this unit?\n";
-                    cout << "1. Move 2. Rotate\n";
-                    cout << ">> ";
-                    getline(cin,choice);
-                    if((choice.at(0) != 49 && choice.at(0) != 50) || choice.size() != 1)
-                    {
-                        cout << "Please correct choice!\n";
-                        continue;
-                    }
-                    else if(choice.at(0) == 49)
-                    {
-                        while(1)
-                        {
-                            cout << "Which Position do you want it to move?\n";
-                            cout << ">> ";
-                            getline(cin,input);
-                            cout << "\n";
-                            if(input.size() != 3 || input.at(0) < 65 || input.at(0) > 105 || (input.at(0) > 73 && input.at(0) < 97) || input.at(1) != 32 || input.at(2) < 49 || input.at(2) > 57)
-                            {
-                                cout << "[System] Input Format of position is \"Row Col\".\n";
-                                cout << "         ex) D 4, e 2, or etc.\n"; 
-                                continue;
-                            }
-                            else
-                            {
-                                if(input.at(0) > 96)
-                                    input.at(0) -= 32;
-                                Cell** movTo = &cell[(input.at(0)-65)*9 + (input.at(2)-49)];
-                                if((*movTo)->getrow() <= (*curcell)->getrow()+1 && (*movTo)->getrow() >= (*curcell)->getrow()-1 && (*movTo)->getcol() <= (*curcell)->getcol()+1 && (*movTo)->getcol() >= (*curcell)->getcol()-1)
-                                {
-                                    if((*movTo)->movableTo())
-                                    {
-                                        swap(*curcell,*movTo);
-                                        cout << endl;
-                                        char tmprow = (*curcell)->getrow() + 65;
-                                        char tmpcol = (*curcell)->getcol() + 49;
-                                        cout << "[Log] Player"<< turn <<": " << tmprow << " " << tmpcol << " => " << input.at(0) << " " << input.at(2) << endl; 
-                                        break;
-                                    }
-                                    else
-                                    {
-                                        cout << "You can't move your Unit to there\n";
-                                        continue;
-                                    }
-                                }
-                                else
-                                {
-                                         cout << "You can't move your Unit to there\n";
-                                        continue;                                   
-                                }
-                            }
-                        } 
-                        break;
-                    }
-                    else
-                    {
-                        while(1)
-                        {
-                            enum Direction curdir = (*curcell)->getUnitDir();
-                            cout << "Do you want it to Rotate?\n";
-                            cout << "1. LEFT 2. RIGHT\n";
-                            cout << ">> ";
-                            getline(cin,choice);
-                            if(choice.size() != 1)
-                            {
-                                cout << "Please correct choice!\n";
-                                continue;
-                            }
-                            if(choice.at(0) == 49)
-                            {
-                                if(curdir != 4)
-                                {
-                                    (*curcell)->setUnitDir((enum Direction)(curdir + 1));
-                                }
-                                else
-                                {
-                                    (*curcell)->setUnitDir((enum Direction)1);
-                                }
-                                cout << endl;
-                                char tmprow = (*curcell)->getrow() + 65;
-                                char tmpcol = (*curcell)->getcol() + 49;
-                                cout << "[Log] Player"<< turn <<": " << tmprow << " " << tmpcol << " ROTATE\n"; 
-                                break;
-                            }
-                            else if(choice.at(0) == 50)
-                            {
-                                if(curdir != 1)
-                                {
-                                    (*curcell)->setUnitDir((enum Direction)(curdir - 1));
-                                }
-                                else
-                                {
-                                    (*curcell)->setUnitDir((enum Direction)4);
-                                }
-                                break;
-                            }
-                            else
-                            {
-                                cout << "You should input 1 or 2\n";
-                                continue;
-                            }
-                        }
-                        break;
-                    }
-                }
-                break;
-            case 5: // 하이퍼미러
-                while(1)
-                {
-                    cout << "What's your Command of this unit?\n";
-                    cout << "1. Move 2. Rotate\n";
-                    cout << ">> ";
-                    getline(cin,choice);
-                    if((choice.at(0) != 49 && choice.at(0) != 50)||choice.size() != 1)
-                    {
-                        cout << "Please correct choice!\n";
-                        continue;
-                    }
-                    else if(choice.at(0) == 49)
-                    {
-                        while(1)
-                        {
-                            cout << "Which Position do you want it to move?\n";
-                            cout << ">> ";
-                            getline(cin,input);
-                            cout << "\n";
-                            if(input.size() != 3 || input.at(0) < 65 || input.at(0) > 105 || (input.at(0) > 73 && input.at(0) < 97) || input.at(1) != 32 || input.at(2) < 49 || input.at(2) > 57)
-                            {
-                                cout << "[System] Input Format of position is \"Row Col\".\n";
-                                cout << "         ex) D 4, e 2, or etc.\n"; 
-                                continue;
-                            }
-                            else
-                            {
-                                if(input.at(0) > 96)
-                                    input.at(0) -= 32;
-                                Cell** movTo = &cell[(input.at(0)-65)*9 + (input.at(2)-49)];
-                                if((*movTo) ==*curcell)
-                                {
-                                    cout << "You must move your Unit\n";
-                                    continue;
-                                }
-                                if((*movTo)->getrow() <= (*curcell)->getrow()+1 && (*movTo)->getrow() >= (*curcell)->getrow()-1 && (*movTo)->getcol() <= (*curcell)->getcol()+1 && (*movTo)->getcol() >= (*curcell)->getcol()-1)
-                                {
-                                    if((*movTo)->getaccesible())
-                                    {
-                                        swap(*curcell,*movTo);
-                                        cout << endl;
-                                        char tmprow = (*curcell)->getrow() + 65;
-                                        char tmpcol = (*curcell)->getcol() + 49;
-                                        cout << "[Log] Player"<< turn <<": " << tmprow << " " << tmpcol << " => " << input.at(0) << " " << input.at(2) << endl; 
-                                        break;
-                                    }
-                                    else
-                                    {
-                                        cout << "You can't move your Unit to there\n";
-                                        continue;
-                                    }
-                                }
-                                else
-                                {
-                                         cout << "You can't move your Unit to there\n";
-                                        continue;                                   
-                                }
-                            }
-                        } 
-                        break;
-                    }
-                    else
-                    {
-                        while(1)
-                        {
-                            enum Direction curdir = (*curcell)->getUnitDir();
-                            cout << "Do you want it to Rotate?\n";
-                            cout << "1. OK 2. Cancle\n";
-                            cout << ">> ";
-                            getline(cin,choice);
-                            if(choice.size() != 1)
-                            {
-                                cout << "Please correct choice!\n";
-                                continue;
-                            }
-                            if(choice.at(0) == 49)
-                            {
-                                if(curdir == 1)
-                                {
-                                    (*curcell)->setUnitDir((enum Direction)(curdir + 1));
-                                }
-                                else
-                                {
-                                    (*curcell)->setUnitDir((enum Direction)(curdir - 1));
-                                }
-                                cout << endl;
-                                char tmprow = (*curcell)->getrow() + 65;
-                                char tmpcol = (*curcell)->getcol() + 49;
-                                cout << "[Log] Player"<< turn <<": " << tmprow << " " << tmpcol << " ROTATE\n"; 
-                                break;
-                            }
-                            else if(choice.at(0) == 50)
-                            {
-                                cout << "Don't rotate!\n";
-                                check = 1;
-                                break;
-                            }
-                            else
-                            {
-                                cout << "You should input 1 or 2\n";
-                                continue;
-                            }
-                        }
-                        break;
-                    } 
-                }
-            break;
-            case 6: // 레이저
-                while(1)
-                {
-                    cout << "What's your Command of this unit?\n";
-                    cout << "1. Rotate\n";
-                    cout << ">> ";
-                    getline(cin,choice);
-                    if(choice.at(0) != 49 || choice.size() != 1)
-                    {
-                        cout << "Please correct choice!\n";
-                        continue;
-                    }
-                    else
-                    {
-                        while(1)
-                        {
-                            enum Direction curdir = (*curcell)->getUnitDir(); 
-                            cout << "Do you want it to Rotate?\n"; // 유닛을 회전시킬지 말지를 정한다.
-                            cout << "1. OK 2. Cancel\n";
-                            cout << ">> ";
-                            getline(cin,choice);
-                            if(choice.size() != 1)
-                            {
-                                cout << "Please correct choice!\n";
-                                continue;
-                            }
-                            if(choice.at(0) == 49)
-                            {
-                                if(curdir == 1)
-                                {
-                                    (*curcell)->setUnitDir((enum Direction)(curdir + 1));
-                                }
-                                else
-                                {
-                                    (*curcell)->setUnitDir((enum Direction)(curdir - 1));
-                                }
-                                cout << endl;
-                                char tmprow = (*curcell)->getrow() + 65;
-                                char tmpcol = (*curcell)->getcol() + 49;
-                                cout << "[Log] Player"<< turn <<": " << tmprow << " " << tmpcol << " ROTATE\n"; 
-                                break;
-                            }
-                            else if(choice.at(0) == 50)
-                            {
-                                cout << "Don't rotate!\n";
-                                check = 1;
-                                break;
-                            }
-                            else
-                            {
-                                cout << "You should input 1 or 2\n";
-                                continue;
-                            }
-                        }
-                        break;
-                    }
-                }
-                break;
-        }
-    if(check == 1)
-    {
-        continue;
-    }
+	return check;
+}
+void Board::Rotate(Cell** curcell)
+{
+				string choice;
+				int turn = ongoingTeam;
+				while(1)
+				{
+								enum Direction curdir = (*curcell)->getUnitDir();
+								cout << "Do you want it to Rotate?\n";
+								cout << "1. LEFT 2. RIGHT\n";
+								cout << ">> ";
+								getline(cin,choice);
+								if(choice.size() != 1)
+								{
+												cout << "[System] Please correct choice!\n";
+												continue;
+								}
+								if(choice.at(0) == 49)
+								{
+												if(curdir != 4)
+												{
+																(*curcell)->setUnitDir((enum Direction)(curdir + 1));
+												}
+												else
+												{
+																(*curcell)->setUnitDir((enum Direction)1);
+												}
+												cout << endl;
+												char tmprow = (*curcell)->getrow() + 65;
+												char tmpcol = (*curcell)->getcol() + 49;
+												cout << "[Log] Player"<< turn <<": " << tmprow << " " << tmpcol << " ROTATE\n"; 
+												break;
+								}
+								else if(choice.at(0) == 50)
+								{
+												if(curdir != 1)
+												{
+																(*curcell)->setUnitDir((enum Direction)(curdir - 1));
+												}
+												else
+												{
+																(*curcell)->setUnitDir((enum Direction)4);
+												}
+												break;
+								}
+								else
+								{
+												cout << "[System] You should input 1 or 2\n";
+												continue;
+								}
+				}
+
+}
+
+Cell* Board::choiceLaser()
+{
+		Cell* remove;
+		string choice;
+		while(1)
+		{
 		cout << "Which Laser do you want to launch?\n";
 		cout << "1. Attack 2. Stun\n";
 		cout << ">> ";
 		getline(cin,choice);
 		if((choice.at(0) != 49 && choice.at(0) != 50)||choice.size() != 1)
 		{
-						cout << "Please correct choice!\n";
+						cout << "[System] Please correct choice!\n";
 						continue;
 		}
 		else if(choice.at(0) == 49)
 		{
 				status->setattack(true);
+				break;
 		}
 		else
 		{
 				status->setattack(false);
+				break;
 		}
-
+		}
     switch((int)ongoingTeam) // 턴을 종료하기 전에 레이저의 현재 방향을 고려하여 빔의 방향을 정하고 레이저를 쏜다.
     {
         case 1:
@@ -988,8 +799,192 @@ void Board::startGame()
 					}	
             break;
     }
+		return remove;
+}
+/* 게임을 진행하는 메인 함수 */
+void Board::startGame()
+{
+
+    initGame();
+    showBoard();
+    while(1)
+    {
+
+        int check = 0, i;
+        int turn = ongoingTeam;
+        Cell** curcell;
+        enum UnitType curunit;
+        string choice;
+        string input;
+				Cell* remove;
+        cout << "Player " << turn << "'s Turn !\n";
+        while(1)
+        {
+            cout << "Which Unit do you want to control?\n";
+            cout << ">> ";
+            getline(cin,input);
+            if(input.size() != 3 || input.at(0) < 65 || input.at(0) > 105 || (input.at(0) > 73 && input.at(0) < 97) || input.at(1) != 32 || input.at(2) < 49 || input.at(2) > 57)
+            { // 잘못된 입력
+                cout << "[System] Input Format of position is \"Row Col\".\n";
+                cout << "         ex) D 4, e 2, or etc.\n"; 
+                continue;
+            }
+            else
+            {
+                if(input.at(0) > 96)
+                    input.at(0) -= 32;
+                curcell = &cell[(input.at(0)-65)*9 + (input.at(2)-49)];
+                enum Team unitteam = (*curcell)->getUnitTeam();
+                curunit = (*curcell)->getUnit();
+                if(curunit != NONE) // 컨트롤 할 유닛을 선택한다.
+                {
+                    if(unitteam == ongoingTeam)
+                    {
+                        cout << "\n";
+												if((*curcell)->getUnitstun())
+												{
+														cout << "The Unit is in stun!!\n";
+														continue;
+												}
+                        break;
+                    }
+                    else
+                    {
+                        cout << "[System] You can't control other's Unit!\n";
+                        continue;
+                    }
+                }
+                else
+                {
+                    cout << "[System] You can't control empty space :)\n";
+                    continue;
+                }
+            }
+        }
+        switch((int)curunit) // 유닛의 종류에 따라 나눈다.
+        {
+            case 1: // 왕
+                while(1)
+                {
+                    cout << "What's your Command of this unit?\n"; // 유닛을 어떻게 컨트롤할지 결정한다.
+                    cout << "1. Move\n";
+                    cout << ">> ";
+                    getline(cin,choice);
+                    cout << "\n";
+                    if(choice.at(0) != 49 || choice.size() != 1)
+                    {
+                        cout << "[System] Please correct choice!\n";
+                        continue;
+                    }
+                    else
+                    {
+												UnitMove(curcell);
+                        break;
+                    }
+                }
+                break;
+            case 2: // 레이저
+                while(1)
+                {
+                    cout << "What's your Command of this unit?\n";
+                    cout << "1. Rotate\n";
+                    cout << ">> ";
+                    getline(cin,choice);
+                    if(choice.at(0) != 49 || choice.size() != 1)
+                    {
+                        cout << "[System] Please correct choice!\n";
+                        continue;
+                    }
+                    else
+                    {
+												check = Rotate_only(curcell);
+                        break;
+                    }
+                }
+                break;
+            case 3: // 블락미러
+            case 4: // 삼각미러
+						case 7:
+                while(1)
+                {
+                    cout << "What's your Command of this unit?\n";
+                    cout << "1. Move 2. Rotate\n";
+                    cout << ">> ";
+                    getline(cin,choice);
+                    if((choice.at(0) != 49 && choice.at(0) != 50) || choice.size() != 1)
+                    {
+                        cout << "[System] Please correct choice!\n";
+                        continue;
+                    }
+                    else if(choice.at(0) == 49)
+                    {
+												UnitMove(curcell);
+                        break;
+                    }
+                    else
+                    {
+												Rotate(curcell);
+                        break;
+                    }
+                }
+                break;
+            case 5: // 하이퍼미러
+                while(1)
+                {
+                    cout << "What's your Command of this unit?\n";
+                    cout << "1. Move 2. Rotate\n";
+                    cout << ">> ";
+                    getline(cin,choice);
+                    if((choice.at(0) != 49 && choice.at(0) != 50)||choice.size() != 1)
+                    {
+                        cout << "[System] Please correct choice!\n";
+                        continue;
+                    }
+                    else if(choice.at(0) == 49)
+                    {
+												UnitMove(curcell);
+                        break;
+                    }
+                    else
+                    {
+											check = Rotate_only(curcell);
+                       break;
+                    } 
+                }
+            break;
+            case 6: // 레이저
+                while(1)
+                {
+                    cout << "What's your Command of this unit?\n";
+                    cout << "1. Rotate\n";
+                    cout << ">> ";
+                    getline(cin,choice);
+                    if(choice.at(0) != 49 || choice.size() != 1)
+                    {
+                        cout << "[System] Please correct choice!\n";
+                        continue;
+                    }
+                    else
+                    {
+												check = Rotate_only(curcell);
+                        break;
+                    }
+                }
+                break;
+        }
+    if(check == 1)
+    {
+        continue;
+    }
+
+		remove = choiceLaser();
 
     showBeam(); // 레이저를 출력한다.
+		if(!king[0]->get_enable() && !king[1]->get_enable())
+		{
+				cout << "[System] Draw!!" << endl;
+				return;
+		}
     if(!king[0]->get_enable()) // 왕이 죽었는지를 판정한다.
     {
         cout << "[System] Player 2's Victory!!" << endl;
@@ -1038,7 +1033,12 @@ void Board::showBoard()
     status->reset();
     for(int i=0;i<81;i++)
     {
-        status->setCell(cell[i]);
+ 				if(cell[i]->getseam())
+				{
+					cell[i]->removeUnit();
+					cell[i]->setseam(false);
+				}
+       status->setCell(cell[i]);
     }
     status->printStatus();
 }

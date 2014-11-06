@@ -43,12 +43,14 @@ Mirror	Mirror.h	/^class Mirror : public Unit$/;"	c
 NONE	Global.h	/^    NONE,$/;"	e	enum:UnitType
 ONE	Global.h	/^    ONE = 1,$/;"	e	enum:Team
 RIGHT	Global.h	/^    RIGHT = 4,$/;"	e	enum:Direction
+Rotate_only	Board.cpp	/^int Board::Rotate_only(Cell** curcell)$/;"	f	class:Board
 SPLITTER	Global.h	/^		SPLITTER,$/;"	e	enum:UnitType
 STATUSBOARDH	StatusBoard.h	/^#define STATUSBOARDH$/;"	d
 STULASER	Global.h	/^		STULASER,$/;"	e	enum:UnitType
 STUNLASERH	StunLaser.h	/^#define STUNLASERH$/;"	d
 StatusBoard	StatusBoard.cpp	/^StatusBoard::StatusBoard()$/;"	f	class:StatusBoard
 StatusBoard	StatusBoard.h	/^class StatusBoard$/;"	c
+Stun	Board.cpp	/^void Board::Stun(Cell* _cell)$/;"	f	class:Board
 StunLaser	StunLaser.cpp	/^StunLaser::StunLaser(Cell* _cell) : Laser(_cell){}$/;"	f	class:StunLaser
 StunLaser	StunLaser.h	/^class StunLaser : public Laser$/;"	c
 TRIMIRROR	Global.h	/^    TRIMIRROR,$/;"	e	enum:UnitType
@@ -61,6 +63,7 @@ UNITH	Unit.h	/^#define UNITH$/;"	d
 UP	Global.h	/^    UP = 1,$/;"	e	enum:Direction
 Unit	Unit.cpp	/^Unit::Unit(Cell* _cell)$/;"	f	class:Unit
 Unit	Unit.h	/^class Unit$/;"	c
+UnitMove	Board.cpp	/^void Board::UnitMove(Cell** curcell)$/;"	f	class:Board
 UnitType	Global.h	/^enum UnitType$/;"	g
 accesible	Cell.h	/^        bool accesible;$/;"	m	class:Cell
 attack	StatusBoard.h	/^				bool attack;$/;"	m	class:StatusBoard
@@ -115,7 +118,7 @@ setUnitDir	Cell.cpp	/^void Cell::setUnitDir(enum Direction _dir) \/\/ 셀에 있
 setUnitTeam	Cell.cpp	/^void Cell::setUnitTeam(enum Team _team) \/\/ 셀에 있는 유닛의 팀을 변경$/;"	f	class:Cell
 setUnitstun	Cell.cpp	/^void Cell::setUnitstun(bool _stun)$/;"	f	class:Cell
 set_dir	Unit.cpp	/^void Unit::set_dir(enum Direction dirr){dir = dirr;}$/;"	f	class:Unit
-set_enable	King.cpp	/^void King::set_enable(bool en){enabled = en;}$/;"	f	class:King
+set_enable	King.cpp	/^void King::set_enable(bool en, enum Team kteam)$/;"	f	class:King
 set_team	Unit.cpp	/^void Unit::set_team(enum Team yourteam){team = yourteam;}$/;"	f	class:Unit
 setaccesible	Cell.cpp	/^void Cell::setaccesible(bool _acc){accesible = _acc;}$/;"	f	class:Cell
 setattack	StatusBoard.cpp	/^void StatusBoard::setattack(bool _att)$/;"	f	class:StatusBoard

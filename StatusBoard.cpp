@@ -82,23 +82,23 @@ void StatusBoard::setCell(Cell* cell) // 셀에 있는 유닛의 종류와 팀, 
                         status[cell->getrow()*2][cell->getcol()*2] = '-';
                         status[cell->getrow()*2+1][cell->getcol()*2] = 'B';
                         status[cell->getrow()*2][cell->getcol()*2+1] = '-';
-                        status[cell->getrow()*2+1][cell->getcol()*2+1] = 'B';
+                        status[cell->getrow()*2+1][cell->getcol()*2+1] = 'M';
                         break;
                        case 3:
                         status[cell->getrow()*2][cell->getcol()*2] = 'B';
                         status[cell->getrow()*2+1][cell->getcol()*2] = '-';
-                        status[cell->getrow()*2][cell->getcol()*2+1] = 'B';
+                        status[cell->getrow()*2][cell->getcol()*2+1] = 'M';
                         status[cell->getrow()*2+1][cell->getcol()*2+1] = '-';
                         break;
                        case 2:
                         status[cell->getrow()*2][cell->getcol()*2] = '|';
                         status[cell->getrow()*2+1][cell->getcol()*2] = '|';
                         status[cell->getrow()*2][cell->getcol()*2+1] = 'B';
-                        status[cell->getrow()*2+1][cell->getcol()*2+1] = 'B';
+                        status[cell->getrow()*2+1][cell->getcol()*2+1] = 'M';
                         break;
                        case 4:
                         status[cell->getrow()*2][cell->getcol()*2] = 'B';
-                        status[cell->getrow()*2+1][cell->getcol()*2] = 'B';
+                        status[cell->getrow()*2+1][cell->getcol()*2] = 'M';
                         status[cell->getrow()*2][cell->getcol()*2+1] = '|';
                         status[cell->getrow()*2+1][cell->getcol()*2+1] = '|';
                         break;
@@ -230,23 +230,23 @@ void StatusBoard::setCell(Cell* cell) // 셀에 있는 유닛의 종류와 팀, 
                         status[cell->getrow()*2][cell->getcol()*2] = '-';
                         status[cell->getrow()*2+1][cell->getcol()*2] = 'b';
                         status[cell->getrow()*2][cell->getcol()*2+1] = '-';
-                        status[cell->getrow()*2+1][cell->getcol()*2+1] = 'b';
+                        status[cell->getrow()*2+1][cell->getcol()*2+1] = 'm';
                         break;
                        case 3:
                         status[cell->getrow()*2][cell->getcol()*2] = 'b';
                         status[cell->getrow()*2+1][cell->getcol()*2] = '-';
-                        status[cell->getrow()*2][cell->getcol()*2+1] = 'b';
+                        status[cell->getrow()*2][cell->getcol()*2+1] = 'm';
                         status[cell->getrow()*2+1][cell->getcol()*2+1] = '-';
                         break;
                        case 2:
                         status[cell->getrow()*2][cell->getcol()*2] = '|';
                         status[cell->getrow()*2+1][cell->getcol()*2] = '|';
                         status[cell->getrow()*2][cell->getcol()*2+1] = 'b';
-                        status[cell->getrow()*2+1][cell->getcol()*2+1] = 'b';
+                        status[cell->getrow()*2+1][cell->getcol()*2+1] = 'm';
                         break;
                        case 4:
                         status[cell->getrow()*2][cell->getcol()*2] = 'b';
-                        status[cell->getrow()*2+1][cell->getcol()*2] = 'b';
+                        status[cell->getrow()*2+1][cell->getcol()*2] = 'm';
                         status[cell->getrow()*2][cell->getcol()*2+1] = '|';
                         status[cell->getrow()*2+1][cell->getcol()*2+1] = '|';
                         break;

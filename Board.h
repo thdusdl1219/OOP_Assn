@@ -24,6 +24,11 @@ class Board
         Cell* launchLaser(Cell* _startcell);
         Cell* beamCurCell(Cell* _cell);
         void swap(Cell*& _a, Cell*& _b);
+				void Stun(Cell* _cell);
+				void UnitMove(Cell** curcell);
+				int Rotate_only(Cell** curcell);
+				void Rotate(Cell** curcell);
+				Cell* choiceLaser();
     public:
         Board ();
         void startGame();

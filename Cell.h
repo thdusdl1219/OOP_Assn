@@ -19,6 +19,7 @@ class Cell
         int row, col;
         enum UnitType unit;
         bool accesible;
+				bool seam;
         Unit* uni;
     public:
         Cell(int _row, int _col);
@@ -39,6 +40,8 @@ class Cell
         void setUnitDir(enum Direction _dir);
 				void setUnitstun(bool _stun);
 				bool getUnitstun();
+				bool getseam();
+				void setseam(bool _se);
         ~Cell();
 };
 #endif

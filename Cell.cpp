@@ -7,8 +7,12 @@ Cell::Cell(int _row, int _col)
     unit = NONE;
 		uni = NULL;
     accesible = true;
+		seam = false;
 
 }
+
+bool Cell::getseam(){return seam;}
+void Cell::setseam(bool _se){seam = _se;}
 
 Unit* Cell::getUni(){return uni;}
 enum UnitType Cell::getUnit(){return unit;}
@@ -71,10 +75,10 @@ void Cell::setUnit(enum UnitType _unit) // 유닛의 타입을 받아서 유닛�
            uni = new HyperMirror(this);
            break;
 				case 6:
-					 uni = new BeamSplitter(this);
+					 uni = new StunLaser(this);
 					 break;
 				case 7:
-					 uni = new StunLaser(this);
+					 uni = new BeamSplitter(this);
 					 break;
     }
    

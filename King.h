@@ -11,7 +11,7 @@ class King : public Unit
     public:
         King (Cell* _cell); // 왕을 초기화한다.
         bool get_enable();
-        void set_enable(bool en);
+        void set_enable(bool en, enum Team kteam);
 };
 
 #endif
