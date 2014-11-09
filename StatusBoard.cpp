@@ -1,6 +1,6 @@
 #include "StatusBoard.h"
 #include <iostream>
-
+#include "Board.h"
 using namespace std;
 
 StatusBoard::StatusBoard()
@@ -343,7 +343,7 @@ void StatusBoard::setCell(Cell* cell) // 셀에 있는 유닛의 종류와 팀, 
    }
 }
 
-void StatusBoard::printStatus() // 게임 보드창을 출력한다.
+void StatusBoard::printStatus(Board* board) // 게임 보드창을 출력한다.
 {
     for(int i=0; i<28;i++)
         cout << "=";
@@ -374,7 +374,17 @@ void StatusBoard::printStatus() // 게임 보드창을 출력한다.
         {
             if(j % 2 == 0)
                 cout << " ";
-            cout << status[i][j];
+			if(beam[i/2][j/2] == true)
+			{
+				if(attack)
+					cout << "\x1b[32m" << status[i][j] << "\x1b[0m";
+				else
+					cout << "\x1b[33m" << status[i][j] << "\x1b[0m";
+			}
+			else if(board->getCell(i/2,j/2)->getUnitTeam() == ONE)
+				cout << "\x1b[31m" << status[i][j] << "\x1b[0m";
+			else
+				cout << "\x1b[34m" << status[i][j] << "\x1b[0m";
         }
         cout << "\n";
     }
@@ -410,9 +420,9 @@ void StatusBoard::setBeam() // 빔을 설정한다.
         }
     }
 }
-void StatusBoard::printBeam() // 빔을 출력한다.
+void StatusBoard::printBeam(Board* b) // 빔을 출력한다.
 {
-    printStatus();    
+    printStatus(b);    
 }
 
 void StatusBoard::setattack(bool _att)

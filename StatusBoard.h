@@ -1,6 +1,7 @@
 #include "Cell.h"
 #ifndef STATUSBOARDH
 #define STATUSBOARDH
+class Board;
 
 class StatusBoard
 {
@@ -20,9 +21,9 @@ class StatusBoard
         void reset();
         void resetBeam();
         void setCell(Cell* cell);
-        void printStatus();
+        void printStatus(Board* board);
         void setBeam();
-        void printBeam();
+        void printBeam(Board* b);
 				void setattack(bool _att);
 				bool getattack();
 };

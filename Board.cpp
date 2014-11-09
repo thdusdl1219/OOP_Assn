@@ -1040,7 +1040,7 @@ void Board::showBoard()
 				}
        status->setCell(cell[i]);
     }
-    status->printStatus();
+    status->printStatus(this);
 }
 /* 빔을 출력하는 함수 */
 void Board::showBeam()
@@ -1051,6 +1051,10 @@ void Board::showBeam()
         status->setCell(cell[i]);
     }
     status->setBeam();
-    status->printBeam();
+    status->printBeam(this);
     status->resetBeam();
+}
+Cell* Board::getCell(int _row, int _col)
+{
+	return cell[_row*9+_col]; 
 }

@@ -108,7 +108,8 @@ enum Team Cell::getUnitTeam() // 셀에 있는 유낫의 팀을 리턴
 
 void Cell::setUnitTeam(enum Team _team) // 셀에 있는 유닛의 팀을 변경
 {
-	uni->set_team(_team);
+	if(uni != NULL)
+		uni->set_team(_team);
 }
 enum Direction Cell::getUnitDir() // 셀에 있는 유닛의 방향을 리턴
 {

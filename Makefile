@@ -4,7 +4,7 @@ chess :	 main.o Board.o StatusBoard.o Cell.o King.o Laser.o BlockMirror.o TriMir
 main.o : main.cpp Board.h
 	g++ -c main.cpp
 
-Board.o : Board.cpp Board.h Global.h StatusBoard.h Cell.h Unit.h King.h AttackLaser.h StunLaser.h Laser.h
+Board.o : Board.cpp Board.h Global.h StatusBoard.h Cell.h Unit.h King.h Laser.h
 	g++ -c Board.cpp
 
 StatusBoard.o : StatusBoard.cpp StatusBoard.h Cell.h
