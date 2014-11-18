@@ -23,7 +23,7 @@ class Board
         void initGame();
         Cell* launchLaser(Cell* _startcell);
         Cell* beamCurCell(Cell* _cell);
-        Cell* swap(Cell*& _a, Cell*& _b);
+        void swap(Cell*& _a, Cell*& _b);
 				void Stun(Cell* _cell);
 				void UnitMove(Cell** curcell);
 				int Rotate_only(Cell** curcell);
@@ -31,7 +31,6 @@ class Board
 				Cell* choiceLaser();
         void showBoard();
         void showBeam();
-				Cell* choose_empty_cell(Cell*&);
  public:
         Board ();
         void startGame();

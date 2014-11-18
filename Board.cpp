@@ -35,47 +35,15 @@ Board::~Board()
     }
 }
 
-Cell* Board::choose_empty_cell(Cell*& _a)
-{
-	int tmprowa;
-	int tmpcola;
-	int tmprowch;
-	int tmpcolch;
-	Cell* tmp;
-	Cell** choose = &cell[rand()%81];
-	while((*choose)->getUni() != NULL || !(*choose)->movableTo())
-		choose = &cell[rand()%81];
-	tmp = (*choose);
-	tmprowch = (*choose)->getrow();
-	tmpcolch = (*choose)->getcol();
-	tmprowa = _a->getrow();
-	tmpcola = _a->getcol();
-	(*choose) = _a;
-	(*choose)->setrow(tmprowch);
-	(*choose)->setcol(tmpcolch);
-	_a = tmp;
-	_a->setrow(tmprowa);
-	_a->setcol(tmpcola);
-	return (*choose);
-	
-}
-
-
 /* 유닛을 스왑할 떄 쓰이는 함수, 두 셀을 서로 스왑하고 row와 col만 다시 지정해준다. */
-Cell* Board::swap(Cell*& _a, Cell*& _b)
+void Board::swap(Cell*& _a, Cell*& _b)
 {
 	int tmprowb;
 	int tmpcolb;
 	int tmprowa;
 	int tmpcola;
 	Cell* tmp;
-	if(_b->getHyper())
-	{
-		_b->setHyper(false);
-		return choose_empty_cell(_a);
-	}
-	else
-	{
+
     tmp = _b;
     tmprowb = _b->getrow();
     tmpcolb = _b->getcol();
@@ -87,8 +55,15 @@ Cell* Board::swap(Cell*& _a, Cell*& _b)
     _a = tmp;
     _a->setrow(tmprowa);
     _a->setcol(tmpcola);
-		return _b;
-	}
+		cout << "[Log] Player"<< ongoingTeam <<": " << (char)(tmprowa + 65) << " " << (char)(tmpcola + 49) << " => " << (char)(tmprowb + 65) << " " << (char)(tmpcolb + 49) << endl;
+	 if(_a->getHyper())
+	 {
+		_a->setHyper(false);
+		Cell** choose = &cell[rand()%81];
+		while((*choose)->getUni() != NULL || !(*choose)->movableTo())
+			choose = &cell[rand()%81];
+		swap(_b, (*choose));
+	 }	 
 }
 /* laser의 방향에 따라서 laser을 가동시키는 함수 */
 Cell* Board::launchLaser(Cell* _startcell )
@@ -634,13 +609,8 @@ void Board::UnitMove(Cell** curcell) // 유닛이 움직이는 경우를 처리�
 																{
 																	if((*movTo)->movableTo())
 																	{
-																				Cell* des = swap(*curcell,*movTo);
+																				swap(*curcell,*movTo);
 																				cout << endl;
-																				char tmprow = (*curcell)->getrow() + 65;
-																				char tmpcol = (*curcell)->getcol() + 49;
-																				char movrow = des->getrow() + 65;
-																				char movcol = des->getcol() + 49;
-																				cout << "[Log] Player"<< turn <<": " << tmprow << " " << tmpcol << " => " << movrow << " " << movcol << endl; 
 																				break;
 																	}
 																	else
@@ -653,13 +623,8 @@ void Board::UnitMove(Cell** curcell) // 유닛이 움직이는 경우를 처리�
 																{
 																	if((*movTo)->getaccesible())
 																	{
-																				Cell* des = swap(*curcell,*movTo);
+																				swap(*curcell,*movTo);
 																				cout << endl;
-																				char tmprow = (*curcell)->getrow() + 65;
-																				char tmpcol = (*curcell)->getcol() + 49;
-																				char movrow = des->getrow() + 65;
-																				char movcol = des->getcol() + 49;
-																			cout << "[Log] Player"<< turn <<": " << tmprow << " " << tmpcol << " => " << movrow << " " << movcol << endl; 
 																				break;
 																	}
 																	else
