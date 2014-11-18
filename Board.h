@@ -33,6 +33,7 @@ class Board
         void showBoard();
         void showBeam();
 				bool testFile(std::ifstream&);
+				void saveGame();
  public:
         Board ();
         void startGame(bool);

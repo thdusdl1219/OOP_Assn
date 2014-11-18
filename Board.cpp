@@ -860,9 +860,15 @@ void Board::startGame(bool load)
         while(1)
         {
             cout << "Which Unit do you want to control?\n";
+						cout << "(Input 'x' or \"exit\" if you want to save and exit.)" << endl;
             cout << ">> ";
             getline(cin,input);
-            if(input.size() != 3 || input.at(0) < 65 || input.at(0) > 105 || (input.at(0) > 73 && input.at(0) < 97) || input.at(1) != 32 || input.at(2) < 49 || input.at(2) > 57)
+						if((input.size() == 1 && input.at(0) == 120) || (input.size() == 4 && input == "exit" ))
+						{
+							saveGame();
+							exit(0);
+						}
+						else if(input.size() != 3 || input.at(0) < 65 || input.at(0) > 105 || (input.at(0) > 73 && input.at(0) < 97) || input.at(1) != 32 || input.at(2) < 49 || input.at(2) > 57)
             { // 잘못된 입력
                 cout << "[System] Input Format of position is \"Row Col\".\n";
                 cout << "         ex) D 4, e 2, or etc.\n"; 
@@ -1101,16 +1107,19 @@ bool Board::testFile(std::ifstream& file)
 	while(!file.eof())
 	{
 
-		file.getline(buf, 27);
-
-		if(strlen(buf) != 27)
+		file.getline(buf, 28);
+		if(j != 9)
 		{
-			return false;
+			if(strlen(buf) != 27)
+			{
+				return false;
+			}
 		}
 		j++;
 	}
+	file.clear();
 	file.seekg(0, file.beg);
-	if(j != 8)
+	if(j != 10)
 		return false;
 	else
 		return true;
@@ -1119,7 +1128,7 @@ bool Board::testFile(std::ifstream& file)
 bool Board::loadGame(std::ifstream& in)
 {
 	char buffer[27];
-	int i, j;
+	int i, j, l = 0, k = 0;
 	cout << "[System] Loading Game.." << endl;
 	if(!testFile(in))
 	{
@@ -1131,15 +1140,47 @@ bool Board::loadGame(std::ifstream& in)
 	}
 	for(j = 0; j < 9; j++)
 	{				
-		in.getline(buffer, 27);
+		in.getline(buffer, 28);
 		for(i = 0; i < 9; i++)
 		{
+
+			cell[j*9+i]->setUnit((enum UnitType)(buffer[i*3+2] - 48));
+			if(buffer[i*3+2]-48 == 2 || buffer[i*3+2]-48 == 6)
+			{
+				laser[l++] = static_cast<Laser *>(cell[j*9+i]->getUni());
+			}
+			else if(buffer[i*3+2]-48 == 1)
+			{
+				king[k++] = static_cast<King *>(cell[j*9+i]->getUni());
+			}
+			else if(buffer[i*3+2]-48 == 8)
+			{
+				cell[j*9+i]->setHyper(true);
+				cell[j*9+i]->setUnit(NONE);
+			}
 			cell[j*9+i]->setUnitTeam((enum Team)(buffer[i*3] - 48));
 			cell[j*9+i]->setUnitDir((enum Direction)(buffer[i*3+1] - 48));
-			cell[j*9+i]->setUnit((enum UnitType)(buffer[i*3+2] - 48));
 		}
 	}
 	in.close();
 	cout << "[System] Complete Loading" << endl << endl;
 	return true;
+}
+
+void Board::saveGame()
+{
+	ofstream outfile("Savefile");
+	int j, i;
+	for(j = 0; j < 9; j ++ )
+	{
+		for(i = 0; i < 9; i++ )
+		{
+			if(cell[j*9 + i]->getHyper())
+			outfile<<cell[j*9 + i]->getUnitTeam()<<cell[j*9 + i]->getUnitDir()<<8;
+			else
+			outfile<<cell[j*9 + i]->getUnitTeam()<<cell[j*9 + i]->getUnitDir()<<cell[j*9 + i]->getUnit();
+		}
+		outfile<<endl;
+	}
+	outfile.close();
 }
