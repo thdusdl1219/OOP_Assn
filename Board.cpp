@@ -1,4 +1,6 @@
 #include "Board.h"
+#include <cstdio>
+#include <cstring>
 using namespace std;
 Board::Board() // 초기화한다.
 {
@@ -838,10 +840,11 @@ Cell* Board::choiceLaser() // Laser를 고르고 launch시키는 함수
 		return remove;
 }
 /* 게임을 진행하는 메인 함수 */
-void Board::startGame()
+void Board::startGame(bool load)
 {
 
-    initGame();
+		if(!load)
+    	initGame();
     showBoard();
     while(1)
     {
@@ -1089,4 +1092,54 @@ void Board::showBeam()
     status->setBeam();
     status->printBeam();
     status->resetBeam();
+}
+
+bool Board::testFile(std::ifstream& file)
+{
+	char buf[27];
+	int j = 0;
+	while(!file.eof())
+	{
+
+		file.getline(buf, 27);
+
+		if(strlen(buf) != 27)
+		{
+			return false;
+		}
+		j++;
+	}
+	file.seekg(0, file.beg);
+	if(j != 8)
+		return false;
+	else
+		return true;
+}
+
+bool Board::loadGame(std::ifstream& in)
+{
+	char buffer[27];
+	int i, j;
+	cout << "[System] Loading Game.." << endl;
+	if(!testFile(in))
+	{
+		cout << "[System] Failure to Load Game!" << endl << endl;
+		in.close();
+		remove("Savefile");
+		startGame(false);
+		return false;
+	}
+	for(j = 0; j < 9; j++)
+	{				
+		in.getline(buffer, 27);
+		for(i = 0; i < 9; i++)
+		{
+			cell[j*9+i]->setUnitTeam((enum Team)(buffer[i*3] - 48));
+			cell[j*9+i]->setUnitDir((enum Direction)(buffer[i*3+1] - 48));
+			cell[j*9+i]->setUnit((enum UnitType)(buffer[i*3+2] - 48));
+		}
+	}
+	in.close();
+	cout << "[System] Complete Loading" << endl << endl;
+	return true;
 }

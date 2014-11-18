@@ -7,6 +7,7 @@
 #include "Laser.h"
 #include <cstdlib>
 #include <ctime>
+#include <fstream>
 #ifndef BOARDH
 #define BOARDH
 
@@ -31,9 +32,11 @@ class Board
 				Cell* choiceLaser();
         void showBoard();
         void showBeam();
+				bool testFile(std::ifstream&);
  public:
         Board ();
-        void startGame();
+        void startGame(bool);
+				bool loadGame(std::ifstream&);
         ~Board();
 };
 
