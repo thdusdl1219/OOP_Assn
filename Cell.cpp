@@ -14,6 +14,10 @@ Cell::Cell(int _row, int _col)
 bool Cell::getseam(){return seam;}
 void Cell::setseam(bool _se){seam = _se;}
 
+bool Cell::getHyper(){return isHyper;}
+void Cell::setHyper(bool _hy){isHyper = _hy;}
+
+
 Unit* Cell::getUni(){return uni;}
 enum UnitType Cell::getUnit(){return unit;}
 int Cell::setrow(int _row){return row = _row;}

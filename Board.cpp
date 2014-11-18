@@ -13,6 +13,7 @@ Board::Board() // 초기화한다.
         }
     }
     status = new StatusBoard ();
+		srand(time(NULL));
 }
 
 Board::~Board()
@@ -34,22 +35,60 @@ Board::~Board()
     }
 }
 
+Cell* Board::choose_empty_cell(Cell*& _a)
+{
+	int tmprowa;
+	int tmpcola;
+	int tmprowch;
+	int tmpcolch;
+	Cell* tmp;
+	Cell** choose = &cell[rand()%81];
+	while((*choose)->getUni() != NULL || !(*choose)->movableTo())
+		choose = &cell[rand()%81];
+	tmp = (*choose);
+	tmprowch = (*choose)->getrow();
+	tmpcolch = (*choose)->getcol();
+	tmprowa = _a->getrow();
+	tmpcola = _a->getcol();
+	(*choose) = _a;
+	(*choose)->setrow(tmprowch);
+	(*choose)->setcol(tmpcolch);
+	_a = tmp;
+	_a->setrow(tmprowa);
+	_a->setcol(tmpcola);
+	return (*choose);
+	
+}
+
 
 /* 유닛을 스왑할 떄 쓰이는 함수, 두 셀을 서로 스왑하고 row와 col만 다시 지정해준다. */
-void Board::swap(Cell*& _a, Cell*& _b)
+Cell* Board::swap(Cell*& _a, Cell*& _b)
 {
-    Cell* tmp;
+	int tmprowb;
+	int tmpcolb;
+	int tmprowa;
+	int tmpcola;
+	Cell* tmp;
+	if(_b->getHyper())
+	{
+		_b->setHyper(false);
+		return choose_empty_cell(_a);
+	}
+	else
+	{
     tmp = _b;
-    int tmprowb = _b->getrow();
-    int tmpcolb = _b->getcol();
-    int tmprowa = _a->getrow();
-    int tmpcola = _a->getcol();
+    tmprowb = _b->getrow();
+    tmpcolb = _b->getcol();
+    tmprowa = _a->getrow();
+    tmpcola = _a->getcol();
     _b = _a;
     _b->setrow(tmprowb);
     _b->setcol(tmpcolb);
     _a = tmp;
     _a->setrow(tmprowa);
     _a->setcol(tmpcola);
+		return _b;
+	}
 }
 /* laser의 방향에 따라서 laser을 가동시키는 함수 */
 Cell* Board::launchLaser(Cell* _startcell )
@@ -517,6 +556,8 @@ void Board::initGame()
     cell[35]->setUnitDir(RIGHT);
     cell[35]->setUnitTeam(TWO);
 
+		cell[40]->setHyper(true);
+
     cell[45]->setUnit(TRIMIRROR);
     cell[45]->setUnitDir(LEFT);
 
@@ -582,22 +623,52 @@ void Board::UnitMove(Cell** curcell) // 유닛이 움직이는 경우를 처리�
 												if(input.at(0) > 96)
 																input.at(0) -= 32;
 												Cell** movTo = &cell[(input.at(0)-65)*9 + (input.at(2)-49)];
+												if((*movTo) == *curcell)
+												{
+													cout << "You must move your Unit\n";
+													continue;
+												}
 												if((*movTo)->getrow() <= (*curcell)->getrow()+1 && (*movTo)->getrow() >= (*curcell)->getrow()-1 && (*movTo)->getcol() <= (*curcell)->getcol()+1 && (*movTo)->getcol() >= (*curcell)->getcol()-1)
 												{
-																if((*movTo)->movableTo())
+																if((*curcell)->getUnit() != HYPERMIRROR)
 																{
-																				swap(*curcell,*movTo);
+																	if((*movTo)->movableTo())
+																	{
+																				Cell* des = swap(*curcell,*movTo);
 																				cout << endl;
 																				char tmprow = (*curcell)->getrow() + 65;
 																				char tmpcol = (*curcell)->getcol() + 49;
-																				cout << "[Log] Player"<< turn <<": " << tmprow << " " << tmpcol << " => " << input.at(0) << " " << input.at(2) << endl; 
+																				char movrow = des->getrow() + 65;
+																				char movcol = des->getcol() + 49;
+																				cout << "[Log] Player"<< turn <<": " << tmprow << " " << tmpcol << " => " << movrow << " " << movcol << endl; 
 																				break;
+																	}
+																	else
+																	{
+																				cout << "[System] You can't move your Unit to there\n";
+																				continue;
+																	}
 																}
 																else
 																{
+																	if((*movTo)->getaccesible())
+																	{
+																				Cell* des = swap(*curcell,*movTo);
+																				cout << endl;
+																				char tmprow = (*curcell)->getrow() + 65;
+																				char tmpcol = (*curcell)->getcol() + 49;
+																				char movrow = des->getrow() + 65;
+																				char movcol = des->getcol() + 49;
+																			cout << "[Log] Player"<< turn <<": " << tmprow << " " << tmpcol << " => " << movrow << " " << movcol << endl; 
+																				break;
+																	}
+																	else
+																	{
 																				cout << "[System] You can't move your Unit to there\n";
 																				continue;
+																	}
 																}
+
 												}
 												else
 												{
@@ -719,7 +790,7 @@ Cell* Board::choiceLaser() // Laser를 고르고 launch시키는 함수
 		cout << "1. Attack 2. Stun\n";
 		cout << ">> ";
 		getline(cin,choice);
-		if((choice.at(0) != 49 && choice.at(0) != 50)||choice.size() != 1)
+		if(choice.size() !=1 || (choice.at(0) != 49 && choice.at(0) != 50))
 		{
 						cout << "[System] Please correct choice!\n";
 						continue;
@@ -871,7 +942,7 @@ void Board::startGame()
                     cout << ">> ";
                     getline(cin,choice);
                     cout << "\n";
-                    if(choice.at(0) != 49 || choice.size() != 1)
+                    if(choice.size() != 1||choice.at(0) != 49 )
                     {
                         cout << "[System] Please correct choice!\n";
                         continue;
@@ -890,7 +961,7 @@ void Board::startGame()
                     cout << "1. Rotate\n";
                     cout << ">> ";
                     getline(cin,choice);
-                    if(choice.at(0) != 49 || choice.size() != 1)
+                    if( choice.size() != 1 || choice.at(0) != 49 )
                     {
                         cout << "[System] Please correct choice!\n";
                         continue;
@@ -911,7 +982,7 @@ void Board::startGame()
                     cout << "1. Move 2. Rotate\n";
                     cout << ">> ";
                     getline(cin,choice);
-                    if((choice.at(0) != 49 && choice.at(0) != 50) || choice.size() != 1)
+                    if( choice.size() != 1 || (choice.at(0) != 49 && choice.at(0) != 50) )
                     {
                         cout << "[System] Please correct choice!\n";
                         continue;
@@ -935,7 +1006,7 @@ void Board::startGame()
                     cout << "1. Move 2. Rotate\n";
                     cout << ">> ";
                     getline(cin,choice);
-                    if((choice.at(0) != 49 && choice.at(0) != 50)||choice.size() != 1)
+                    if(choice.size() != 1 || (choice.at(0) != 49 && choice.at(0) != 50))
                     {
                         cout << "[System] Please correct choice!\n";
                         continue;
@@ -959,7 +1030,7 @@ void Board::startGame()
                     cout << "1. Rotate\n";
                     cout << ">> ";
                     getline(cin,choice);
-                    if(choice.at(0) != 49 || choice.size() != 1)
+                    if( choice.size() != 1 || choice.at(0) != 49 )
                     {
                         cout << "[System] Please correct choice!\n";
                         continue;

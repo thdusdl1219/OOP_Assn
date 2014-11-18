@@ -21,6 +21,7 @@ class Cell
         bool accesible;
 				bool seam;
         Unit* uni;
+				bool isHyper;
     public:
         Cell(int _row, int _col);
         Unit* getUni();
@@ -41,7 +42,9 @@ class Cell
 				void setUnitstun(bool _stun);
 				bool getUnitstun();
 				bool getseam();
-				void setseam(bool _se);
+				void setseam(bool);
+				bool getHyper();
+				void setHyper(bool);
         ~Cell();
 };
 #endif

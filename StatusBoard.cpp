@@ -47,10 +47,20 @@ void StatusBoard::setCell(Cell* cell) // 셀에 있는 유닛의 종류와 팀, 
            switch((int)cell->getUnit())
            {
                case 0:
-                   status[cell->getrow()*2][cell->getcol()*2] = ' ';
-                   status[cell->getrow()*2+1][cell->getcol()*2] = ' ';
-                   status[cell->getrow()*2][cell->getcol()*2+1] = ' ';
-                   status[cell->getrow()*2+1][cell->getcol()*2+1] = ' ';
+								if(cell->getHyper())
+								{
+									status[cell->getrow()*2][cell->getcol()*2] = '/';
+									status[cell->getrow()*2+1][cell->getcol()*2] = '\\';
+									status[cell->getrow()*2][cell->getcol()*2+1] = '\\';
+									status[cell->getrow()*2+1][cell->getcol()*2+1] = '/';
+								}
+								else
+								{
+                  status[cell->getrow()*2][cell->getcol()*2] = ' ';
+                  status[cell->getrow()*2+1][cell->getcol()*2] = ' ';
+                  status[cell->getrow()*2][cell->getcol()*2+1] = ' ';
+                  status[cell->getrow()*2+1][cell->getcol()*2+1] = ' ';
+								}
                    break;
                case 1:
                    status[cell->getrow()*2][cell->getcol()*2] = 'K';

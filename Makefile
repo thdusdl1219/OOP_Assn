@@ -46,3 +46,4 @@ StunLaser.o : StunLaser.cpp StunLaser.h Laser.h
 clean :
 		rm *.o
 		rm chess
+		rm *~
