@@ -7,7 +7,8 @@ class Cell;
 class Mirror : public Unit
 {
 	public :
-		Mirror (Cell* _cell);
+		Mirror (Cell* _cell, Board* b);
+		virtual int control_unit();
 };
 
 #endif

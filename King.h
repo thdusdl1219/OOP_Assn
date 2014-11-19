@@ -9,9 +9,10 @@ class King : public Unit
     private:
         bool enabled;
     public:
-        King (Cell* _cell); // 왕을 초기화한다.
-        bool get_enable();
-        void set_enable(bool en, enum Team kteam);
+        King (Cell* _cell, Board* b); // 왕을 초기화한다.
+        virtual bool get_enable();
+        virtual void set_enable(bool);
+				virtual int control_unit();
 };
 
 #endif

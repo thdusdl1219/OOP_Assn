@@ -63,8 +63,8 @@ TriMirror	TriMirror.h	/^class TriMirror : public Mirror$/;"	c
 UNITH	Unit.h	/^#define UNITH$/;"	d
 UP	Global.h	/^    UP = 1,$/;"	e	enum:Direction
 Unit	Unit.cpp	/^Unit::Unit(Cell* _cell) \/\/ 모든 유닛들의 부모 클래스인 Unit을 초기화하는 함수$/;"	f	class:Unit
-Unit	Unit.h	/^class Unit$/;"	c
-UnitMove	Board.cpp	/^void Board::UnitMove(Cell** curcell) \/\/ 유닛이 움직이는 경우를 처리하는 함수$/;"	f	class:Board
+Unit	Unit.h	/^class Unit : public Board$/;"	c
+UnitMove	Unit.cpp	/^void Unit::UnitMove()$/;"	f	class:Unit
 UnitType	Global.h	/^enum UnitType$/;"	g
 accesible	Cell.h	/^        bool accesible;$/;"	m	class:Cell
 attack	StatusBoard.h	/^				bool attack;$/;"	m	class:StatusBoard
@@ -78,9 +78,11 @@ choiceLaser	Board.cpp	/^Cell* Board::choiceLaser() \/\/ Laser를 고르고 launc
 col	Cell.h	/^        int row, col;$/;"	m	class:Cell
 cols	Board.h	/^        int rows, cols;$/;"	m	class:Board
 cols	StatusBoard.h	/^        int rows, cols;$/;"	m	class:StatusBoard
+control_unit	King.cpp	/^virtual int King::control_unit()$/;"	f	class:King
 dir	Unit.h	/^					enum Direction dir;$/;"	m	class:Unit	typeref:enum:Unit::Direction
 enabled	King.h	/^        bool enabled;$/;"	m	class:King
 getBeamdir	StatusBoard.cpp	/^enum Direction StatusBoard::getBeamdir(){ return Beamdir; }$/;"	f	class:StatusBoard
+getCell	Board.cpp	/^Cell* getCell(int i)$/;"	f
 getHyper	Cell.cpp	/^bool Cell::getHyper(){return isHyper;}$/;"	f	class:Cell
 getUni	Cell.cpp	/^Unit* Cell::getUni(){return uni;}$/;"	f	class:Cell
 getUnit	Cell.cpp	/^enum UnitType Cell::getUnit(){return unit;}$/;"	f	class:Cell
@@ -88,6 +90,7 @@ getUnitDir	Cell.cpp	/^enum Direction Cell::getUnitDir() \/\/ 셀에 있는 유�
 getUnitTeam	Cell.cpp	/^enum Team Cell::getUnitTeam() \/\/ 셀에 있는 유낫의 팀을 리턴 $/;"	f	class:Cell
 getUnitstun	Cell.cpp	/^bool Cell::getUnitstun() \/\/ 유닛의 스턴 상태를 얻어오는 함수$/;"	f	class:Cell
 getUnitstunturn	Cell.cpp	/^int Cell::getUnitstunturn()$/;"	f	class:Cell
+get_cell	Unit.cpp	/^Cell* Unit::get_cell(){return cell;}$/;"	f	class:Unit
 get_dir	Unit.cpp	/^enum Direction Unit::get_dir(){return dir;}$/;"	f	class:Unit
 get_enable	King.cpp	/^bool King::get_enable(){return enabled;}$/;"	f	class:King
 get_team	Unit.cpp	/^enum Team Unit::get_team(){return team;}$/;"	f	class:Unit
@@ -128,6 +131,7 @@ setUnitDir	Cell.cpp	/^void Cell::setUnitDir(enum Direction _dir) \/\/ 셀에 있
 setUnitTeam	Cell.cpp	/^void Cell::setUnitTeam(enum Team _team) \/\/ 셀에 있는 유닛의 팀을 변경$/;"	f	class:Cell
 setUnitstun	Cell.cpp	/^void Cell::setUnitstun(bool _stun) \/\/ 유닛의 스턴 상태를 변경하는 함수$/;"	f	class:Cell
 setUnitstunturn	Cell.cpp	/^void Cell::setUnitstunturn(int turn)$/;"	f	class:Cell
+set_cell	Unit.cpp	/^void Unit::set_cell(Cell* newcell){cell = newcell;}$/;"	f	class:Unit
 set_dir	Unit.cpp	/^void Unit::set_dir(enum Direction dirr){dir = dirr;}$/;"	f	class:Unit
 set_enable	King.cpp	/^void King::set_enable(bool en, enum Team kteam)$/;"	f	class:King
 set_team	Unit.cpp	/^void Unit::set_team(enum Team yourteam){team = yourteam;}$/;"	f	class:Unit

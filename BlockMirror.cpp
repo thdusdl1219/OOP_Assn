@@ -1,4 +1,4 @@
 #include "BlockMirror.h"
 
-BlockMirror::BlockMirror(Cell* _cell) : Mirror(_cell)
+BlockMirror::BlockMirror(Cell* _cell, Board* b) : Mirror(_cell,b)
 {}

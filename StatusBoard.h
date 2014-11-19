@@ -1,6 +1,7 @@
-#include "Cell.h"
 #ifndef STATUSBOARDH
 #define STATUSBOARDH
+#include "Global.h"
+#include "Cell.h"
 
 class StatusBoard
 {

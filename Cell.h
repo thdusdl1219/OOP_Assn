@@ -1,18 +1,16 @@
 #ifndef CELLH
 #define CELLH
 
-#include "Unit.h"
 #include "Global.h"
 #include "King.h"
 #include "AttackLaser.h"
-#include "StunLaser.h"
 #include "BlockMirror.h"
 #include "TriMirror.h"
 #include "HyperMirror.h"
+#include "StunLaser.h"
 #include "BeamSplitter.h"
-
 #include <iostream>
-
+class Board;
 class Cell
 {
     private:
@@ -22,8 +20,9 @@ class Cell
 				bool seam;
         Unit* uni;
 				bool isHyper;
+				Board* board;
     public:
-        Cell(int _row, int _col);
+        Cell(int _row, int _col, Board* b);
         Unit* getUni();
         enum UnitType getUnit();
         void setUnit(enum UnitType _unit);

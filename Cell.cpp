@@ -1,6 +1,6 @@
 #include "Cell.h"
 
-Cell::Cell(int _row, int _col)
+Cell::Cell(int _row, int _col, Board* b)
 {
     row = _row;
     col = _col;
@@ -9,6 +9,7 @@ Cell::Cell(int _row, int _col)
     accesible = true;
 		seam = false;
 		isHyper = false;
+		board = b;
 
 }
 
@@ -78,26 +79,26 @@ void Cell::setUnit(enum UnitType _unit) // 유닛의 타입을 받아서 유닛�
         case 0: 
             break;
         case 1:
-            uni = new King(this);
+            uni = new King(this, board);
             break;
         case 2:
-           uni = new AttackLaser(this);
+           uni = new AttackLaser(this, board);
            accesible = false;
            break;
         case 3:
-           uni = new BlockMirror(this);
+           uni = new BlockMirror(this, board);
            break;
         case 4:
-           uni = new TriMirror(this);
+           uni = new TriMirror(this, board);
            break;
         case 5:
-           uni = new HyperMirror(this);
+           uni = new HyperMirror(this, board);
            break;
 				case 6:
-					 uni = new StunLaser(this);
+					 uni = new StunLaser(this, board);
 					 break;
 				case 7:
-					 uni = new BeamSplitter(this);
+					 uni = new BeamSplitter(this, board);
 					 break;
     }
    
@@ -141,3 +142,5 @@ void Cell::setUnitDir(enum Direction _dir) // 셀에 있는 유닛의 방향을 
 	if(uni != NULL)
 		uni->set_dir(_dir);
 }
+
+

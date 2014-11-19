@@ -11,9 +11,9 @@ Board::Board() // 초기화한다.
     {
         for(int j =0;j<9;j++)
         {
-            cell[i*9+j] = new Cell(i, j);
+            cell[i*9+j] = new Cell(i, j, this);
         }
-    }
+    }	
     status = new StatusBoard ();
 		srand(time(NULL));
 }
@@ -25,20 +25,10 @@ Board::~Board()
         delete cell[i];
         cell[i] = NULL;
     }
-    for(int i = 0; i < 2; i++)
-    {
-        delete king[i];
-        king[i] = NULL;
-    }
-    for(int i = 0; i < 4; i++)
-    {
-        delete laser[i];
-        laser[i] = NULL;
-    }
 }
 
 /* 유닛을 스왑할 떄 쓰이는 함수, 두 셀을 서로 스왑하고 row와 col만 다시 지정해준다. */
-void Board::swap(Cell*& _a, Cell*& _b)
+/*void Board::swap(Cell*& _a, Cell*& _b)
 {
 	int tmprowb;
 	int tmpcolb;
@@ -66,7 +56,7 @@ void Board::swap(Cell*& _a, Cell*& _b)
 			choose = &cell[rand()%81];
 		swap(_b, (*choose));
 	 }	 
-}
+}*/
 /* laser의 방향에 따라서 laser을 가동시키는 함수 */
 Cell* Board::launchLaser(Cell* _startcell )
 {
@@ -202,7 +192,7 @@ Cell* Board::beamCurCell(Cell* _cell)
         case 1:
 					if(status->getattack())
 					{
-           static_cast<King *>(_cell->getUni())->set_enable(false, _cell->getUnitTeam()); // 왕 죽음
+           _cell->getUni()->set_enable(false); // 왕 죽음
 					}
 					else
 						Stun(_cell);
@@ -497,17 +487,15 @@ void Board::initGame()
 {
     cout << "[System] Initializing Game..\n";
     cell[0]->setUnit(ATTLASER);
-    laser[0] = static_cast<Laser *>(cell[0]->getUni());
     cell[1]->setaccesible(false);
     cell[4]->setUnit(BLOCKMIRROR);
     cell[4]->setUnitDir(DOWN);
     cell[5]->setUnit(KING);
-    king[0] = static_cast<King *>(cell[5]->getUni());
+		king[0] = cell[5]->getUni();
     cell[6]->setUnit(BLOCKMIRROR);
     cell[6]->setUnitDir(DOWN);
 		cell[7]->setaccesible(false);
 		cell[8]->setUnit(STULASER);
-		laser[1] = static_cast<Laser *>(cell[8]->getUni());
     cell[9]->setaccesible(false);
 		cell[10]->setUnit(SPLITTER);
 		cell[10]->setUnitDir(LEFT);
@@ -563,23 +551,25 @@ void Board::initGame()
     cell[71]->setaccesible(false);
 		cell[72]->setUnit(ATTLASER);
 		cell[72]->setUnitTeam(TWO);
-		laser[2] = static_cast<Laser *>(cell[72]->getUni());
 		cell[73]->setaccesible(false);
     cell[74]->setUnit(BLOCKMIRROR);
     cell[74]->setUnitTeam(TWO);
     cell[75]->setUnit(KING);
+		king[1] = cell[75]->getUni();
     cell[75]->setUnitTeam(TWO);
-    king[1] = static_cast<King *>(cell[75]->getUni());
     cell[76]->setUnit(BLOCKMIRROR);
     cell[76]->setUnitTeam(TWO);
     cell[79]->setaccesible(false);
     cell[80]->setUnit(STULASER);
     cell[80]->setUnitTeam(TWO);
-    laser[3] = static_cast<Laser *>(cell[80]->getUni());
     cout << "[System] Complete Initializing.\n";
 }
 
-void Board::UnitMove(Cell** curcell) // 유닛이 움직이는 경우를 처리하는 함수
+Cell** Board::getCell(int i)
+{
+	return &cell[i];
+}
+/*void Board::UnitMove(Cell** curcell) // 유닛이 움직이는 경우를 처리하는 함수
 {
 				int turn = ongoingTeam;
 				string input;
@@ -645,8 +635,8 @@ void Board::UnitMove(Cell** curcell) // 유닛이 움직이는 경우를 처리�
 								}
 				}
 
-}
-
+}*/
+/*
 int Board::Rotate_only(Cell** curcell) // 유닛이 회전하는 경우를 처리하는 함수
 {
 				int check = 0;
@@ -746,7 +736,7 @@ void Board::Rotate(Cell** curcell) // 유닛이 회전하는 경우를 처리하
 				}
 
 }
-
+*/
 Cell* Board::choiceLaser() // Laser를 고르고 launch시키는 함수
 {
 		Cell* remove;
@@ -778,7 +768,7 @@ Cell* Board::choiceLaser() // Laser를 고르고 launch시키는 함수
         case 1:
 					if(status->getattack())
 					{
-            switch((int)laser[0]->get_dir())
+            switch((int)cell[0]->getUni()->get_dir())
             {
                 case 1:
                     status->setBeamdir(DOWN);
@@ -792,7 +782,7 @@ Cell* Board::choiceLaser() // Laser를 고르고 launch시키는 함수
 					}
 					else
 					{
-            switch((int)laser[1]->get_dir())
+            switch((int)cell[8]->getUni()->get_dir())
             {
                 case 1:
                     status->setBeamdir(DOWN);
@@ -808,7 +798,7 @@ Cell* Board::choiceLaser() // Laser를 고르고 launch시키는 함수
         case 2:
 					if(status->getattack())
 					{
-            switch((int)laser[2]->get_dir())
+            switch((int)cell[72]->getUni()->get_dir())
             {
                 case 1:
                     status->setBeamdir(UP);
@@ -822,7 +812,7 @@ Cell* Board::choiceLaser() // Laser를 고르고 launch시키는 함수
 					}
 					else
 					{
-            switch((int)laser[3]->get_dir())
+            switch((int)cell[80]->getUni()->get_dir())
             {
                 case 1:
                     status->setBeamdir(UP);
@@ -852,7 +842,7 @@ void Board::startGame(bool load)
         int check = 0, i;
         int turn = ongoingTeam;
         Cell** curcell;
-        enum UnitType curunit;
+        Unit* curunit;
         string choice;
         string input;
 				Cell* remove;
@@ -880,8 +870,8 @@ void Board::startGame(bool load)
                     input.at(0) -= 32;
                 curcell = &cell[(input.at(0)-65)*9 + (input.at(2)-49)];
                 enum Team unitteam = (*curcell)->getUnitTeam();
-                curunit = (*curcell)->getUnit();
-                if(curunit != NONE) // 컨트롤 할 유닛을 선택한다.
+                curunit = (*curcell)->getUni();
+                if(curunit != NULL) // 컨트롤 할 유닛을 선택한다.
                 {
                     if(unitteam == ongoingTeam)
                     {
@@ -906,6 +896,8 @@ void Board::startGame(bool load)
                 }
             }
         }
+				check = curunit->control_unit();
+				/*
         switch((int)curunit) // 유닛의 종류에 따라 나눈다.
         {
             case 1: // 왕
@@ -1016,7 +1008,7 @@ void Board::startGame(bool load)
                     }
                 }
                 break;
-        }
+        }*/
     if(check == 1)
     {
         continue;
@@ -1148,7 +1140,7 @@ bool Board::loadGame(std::ifstream& in)
 			if(buffer[i*5+2]-48 == 2 || buffer[i*5+2]-48 == 6)
 			{
 				if((j*9 + i) == 0 || (j*9 + i) == 8 || (j*9 + i) == 72 || (j*9 + i) == 80)
-					laser[l++] = static_cast<Laser *>(cell[j*9+i]->getUni());
+					l++;
 				else
 				{
 								cout << "[System] Failure to Load Game!" << endl << endl;
@@ -1161,7 +1153,7 @@ bool Board::loadGame(std::ifstream& in)
 			}
 			else if(buffer[i*5+2]-48 == 1)
 			{
-				king[k++] = static_cast<King *>(cell[j*9+i]->getUni());
+				king[k++] = cell[j*9+i]->getUni();
 			}
 			else if(buffer[i*5+2]-48 == 8)
 			{

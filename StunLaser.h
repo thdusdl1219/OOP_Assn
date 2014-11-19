@@ -7,7 +7,7 @@ class Cell;
 class StunLaser : public Laser
 {
 				public :
-					StunLaser(Cell* _cell);
+					StunLaser(Cell* _cell, Board* b);
 };
 
 #endif

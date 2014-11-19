@@ -5,6 +5,6 @@ class Cell;
 class BeamSplitter : public Mirror
 {
 				public :
-					BeamSplitter(Cell* _cell);
+					BeamSplitter(Cell* _cell, Board* b);
 };
 #endif

@@ -1,2 +1,2 @@
 #include "StunLaser.h"
-StunLaser::StunLaser(Cell* _cell) : Laser(_cell){}
+StunLaser::StunLaser(Cell* _cell,Board* b) : Laser(_cell,b ){}
