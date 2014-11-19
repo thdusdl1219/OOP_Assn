@@ -507,7 +507,7 @@ void Board::initGame()
     cell[6]->setUnitDir(DOWN);
 		cell[7]->setaccesible(false);
 		cell[8]->setUnit(STULASER);
-		laser[2] = static_cast<Laser *>(cell[8]->getUni());
+		laser[1] = static_cast<Laser *>(cell[8]->getUni());
     cell[9]->setaccesible(false);
 		cell[10]->setUnit(SPLITTER);
 		cell[10]->setUnitDir(LEFT);
@@ -563,7 +563,7 @@ void Board::initGame()
     cell[71]->setaccesible(false);
 		cell[72]->setUnit(ATTLASER);
 		cell[72]->setUnitTeam(TWO);
-		laser[1] = static_cast<Laser *>(cell[72]->getUni());
+		laser[2] = static_cast<Laser *>(cell[72]->getUni());
 		cell[73]->setaccesible(false);
     cell[74]->setUnit(BLOCKMIRROR);
     cell[74]->setUnitTeam(TWO);
@@ -792,7 +792,7 @@ Cell* Board::choiceLaser() // Laser를 고르고 launch시키는 함수
 					}
 					else
 					{
-            switch((int)laser[2]->get_dir())
+            switch((int)laser[1]->get_dir())
             {
                 case 1:
                     status->setBeamdir(DOWN);
@@ -808,7 +808,7 @@ Cell* Board::choiceLaser() // Laser를 고르고 launch시키는 함수
         case 2:
 					if(status->getattack())
 					{
-            switch((int)laser[1]->get_dir())
+            switch((int)laser[2]->get_dir())
             {
                 case 1:
                     status->setBeamdir(UP);
@@ -1102,15 +1102,15 @@ void Board::showBeam()
 
 bool Board::testFile(std::ifstream& file)
 {
-	char buf[27];
+	char buf[45];
 	int j = 0;
 	while(!file.eof())
 	{
 
-		file.getline(buf, 28);
+		file.getline(buf, 46);
 		if(j != 9)
 		{
-			if(strlen(buf) != 27)
+			if(strlen(buf) != 45)
 			{
 				return false;
 			}
@@ -1127,7 +1127,7 @@ bool Board::testFile(std::ifstream& file)
 
 bool Board::loadGame(std::ifstream& in)
 {
-	char buffer[27];
+	char buffer[45];
 	int i, j, l = 0, k = 0;
 	cout << "[System] Loading Game.." << endl;
 	if(!testFile(in))
@@ -1140,28 +1140,73 @@ bool Board::loadGame(std::ifstream& in)
 	}
 	for(j = 0; j < 9; j++)
 	{				
-		in.getline(buffer, 28);
+		in.getline(buffer, 46);
 		for(i = 0; i < 9; i++)
 		{
 
-			cell[j*9+i]->setUnit((enum UnitType)(buffer[i*3+2] - 48));
-			if(buffer[i*3+2]-48 == 2 || buffer[i*3+2]-48 == 6)
+			cell[j*9+i]->setUnit((enum UnitType)(buffer[i*5+2] - 48));
+			if(buffer[i*5+2]-48 == 2 || buffer[i*5+2]-48 == 6)
 			{
-				laser[l++] = static_cast<Laser *>(cell[j*9+i]->getUni());
+				if((j*9 + i) == 0 || (j*9 + i) == 8 || (j*9 + i) == 72 || (j*9 + i) == 80)
+					laser[l++] = static_cast<Laser *>(cell[j*9+i]->getUni());
+				else
+				{
+								cout << "[System] Failure to Load Game!" << endl << endl;
+								in.close();
+								remove("Savefile");
+								Board* board = new Board();
+								board->startGame(false);
+								return false;
+				}
 			}
-			else if(buffer[i*3+2]-48 == 1)
+			else if(buffer[i*5+2]-48 == 1)
 			{
 				king[k++] = static_cast<King *>(cell[j*9+i]->getUni());
 			}
-			else if(buffer[i*3+2]-48 == 8)
+			else if(buffer[i*5+2]-48 == 8)
 			{
 				cell[j*9+i]->setHyper(true);
 				cell[j*9+i]->setUnit(NONE);
 			}
-			cell[j*9+i]->setUnitTeam((enum Team)(buffer[i*3] - 48));
-			cell[j*9+i]->setUnitDir((enum Direction)(buffer[i*3+1] - 48));
+			cell[j*9+i]->setUnitTeam((enum Team)(buffer[i*5] - 48));
+			cell[j*9+i]->setUnitDir((enum Direction)(buffer[i*5+1] - 48));
+			cell[j*9+i]->setUnitstun((bool)(buffer[i*5+3] - 48));
+			cell[j*9+i]->setUnitstunturn(buffer[i*5+4]-48);
 		}
 	}
+	if(k != 2 || l != 4)
+	{
+		cout << "[System] Failure to Load Game!" << endl << endl;
+		in.close();
+		remove("Savefile");
+		Board* board = new Board();
+		board->startGame(false);
+		return false;
+	
+	}
+	in.getline(buffer, 2);
+	if(buffer[0] - 48 == 1 || buffer[0]-48 == 2)
+	{
+		ongoingTeam = (enum Team)(buffer[0]-48);
+	}
+	else
+	{
+		cout << "[System] Failure to Load Game!" << endl << endl;
+		in.close();
+		remove("Savefile");
+		Board* board = new Board();
+		board->startGame(false);
+		return false;
+}
+	cell[1]->setaccesible(false);
+	cell[7]->setaccesible(false);
+	cell[9]->setaccesible(false);
+	cell[17]->setaccesible(false);
+
+	cell[63]->setaccesible(false);
+	cell[71]->setaccesible(false);
+	cell[73]->setaccesible(false);
+	cell[79]->setaccesible(false);
 	in.close();
 	cout << "[System] Complete Loading" << endl << endl;
 	return true;
@@ -1176,11 +1221,12 @@ void Board::saveGame()
 		for(i = 0; i < 9; i++ )
 		{
 			if(cell[j*9 + i]->getHyper())
-			outfile<<cell[j*9 + i]->getUnitTeam()<<cell[j*9 + i]->getUnitDir()<<8;
+			outfile<<cell[j*9 + i]->getUnitTeam()<<cell[j*9 + i]->getUnitDir()<<8<<0<<0;
 			else
-			outfile<<cell[j*9 + i]->getUnitTeam()<<cell[j*9 + i]->getUnitDir()<<cell[j*9 + i]->getUnit();
+			outfile<<cell[j*9 + i]->getUnitTeam()<<cell[j*9 + i]->getUnitDir()<<cell[j*9 + i]->getUnit()<<cell[j*9 + i]->getUnitstun()<<cell[j*9 +i]->getUnitstunturn();
 		}
 		outfile<<endl;
 	}
+	outfile<<ongoingTeam;
 	outfile.close();
 }

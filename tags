@@ -87,6 +87,7 @@ getUnit	Cell.cpp	/^enum UnitType Cell::getUnit(){return unit;}$/;"	f	class:Cell
 getUnitDir	Cell.cpp	/^enum Direction Cell::getUnitDir() \/\/ 셀에 있는 유닛의 방향을 리턴$/;"	f	class:Cell
 getUnitTeam	Cell.cpp	/^enum Team Cell::getUnitTeam() \/\/ 셀에 있는 유낫의 팀을 리턴 $/;"	f	class:Cell
 getUnitstun	Cell.cpp	/^bool Cell::getUnitstun() \/\/ 유닛의 스턴 상태를 얻어오는 함수$/;"	f	class:Cell
+getUnitstunturn	Cell.cpp	/^int Cell::getUnitstunturn()$/;"	f	class:Cell
 get_dir	Unit.cpp	/^enum Direction Unit::get_dir(){return dir;}$/;"	f	class:Unit
 get_enable	King.cpp	/^bool King::get_enable(){return enabled;}$/;"	f	class:King
 get_team	Unit.cpp	/^enum Team Unit::get_team(){return team;}$/;"	f	class:Unit
@@ -103,6 +104,7 @@ isHyper	Cell.h	/^				bool isHyper;$/;"	m	class:Cell
 king	Board.h	/^        King* king[2];$/;"	m	class:Board
 laser	Board.h	/^        Laser* laser[4];$/;"	m	class:Board
 launchLaser	Board.cpp	/^Cell* Board::launchLaser(Cell* _startcell )$/;"	f	class:Board
+loadGame	Board.cpp	/^bool Board::loadGame(std::ifstream& in)$/;"	f	class:Board
 main	main.cpp	/^int main()$/;"	f
 movableTo	Cell.cpp	/^bool Cell::movableTo() \/\/ 셀이 접근 가능한 곳인지 확인한다.$/;"	f	class:Cell
 ongoingTeam	Board.h	/^        enum Team ongoingTeam;$/;"	m	class:Board	typeref:enum:Board::Team
@@ -114,6 +116,7 @@ resetBeam	StatusBoard.cpp	/^void StatusBoard::resetBeam() \/\/ beam을 false로 
 row	Cell.h	/^        int row, col;$/;"	m	class:Cell
 rows	Board.h	/^        int rows, cols;$/;"	m	class:Board
 rows	StatusBoard.h	/^        int rows, cols;$/;"	m	class:StatusBoard
+saveGame	Board.cpp	/^void Board::saveGame()$/;"	f	class:Board
 seam	Cell.h	/^				bool seam;$/;"	m	class:Cell
 setBeam	StatusBoard.cpp	/^void StatusBoard::setBeam() \/\/ 빔을 설정한다.$/;"	f	class:StatusBoard
 setBeam	StatusBoard.cpp	/^void StatusBoard::setBeam(int _row, int _col, bool _a){beam[_row][_col] = _a;}$/;"	f	class:StatusBoard
@@ -124,6 +127,7 @@ setUnit	Cell.cpp	/^void Cell::setUnit(enum UnitType _unit) \/\/ 유닛의 타입
 setUnitDir	Cell.cpp	/^void Cell::setUnitDir(enum Direction _dir) \/\/ 셀에 있는 유닛의 방향을 변경$/;"	f	class:Cell
 setUnitTeam	Cell.cpp	/^void Cell::setUnitTeam(enum Team _team) \/\/ 셀에 있는 유닛의 팀을 변경$/;"	f	class:Cell
 setUnitstun	Cell.cpp	/^void Cell::setUnitstun(bool _stun) \/\/ 유닛의 스턴 상태를 변경하는 함수$/;"	f	class:Cell
+setUnitstunturn	Cell.cpp	/^void Cell::setUnitstunturn(int turn)$/;"	f	class:Cell
 set_dir	Unit.cpp	/^void Unit::set_dir(enum Direction dirr){dir = dirr;}$/;"	f	class:Unit
 set_enable	King.cpp	/^void King::set_enable(bool en, enum Team kteam)$/;"	f	class:King
 set_team	Unit.cpp	/^void Unit::set_team(enum Team yourteam){team = yourteam;}$/;"	f	class:Unit
@@ -136,13 +140,14 @@ setstun	Unit.cpp	/^void Unit::setstun(bool _st){stun = _st;}$/;"	f	class:Unit
 setturn	Unit.cpp	/^void Unit::setturn(int _t){stunturn = _t;} $/;"	f	class:Unit
 showBeam	Board.cpp	/^void Board::showBeam()$/;"	f	class:Board
 showBoard	Board.cpp	/^void Board::showBoard()$/;"	f	class:Board
-startGame	Board.cpp	/^void Board::startGame()$/;"	f	class:Board
+startGame	Board.cpp	/^void Board::startGame(bool load)$/;"	f	class:Board
 status	Board.h	/^        StatusBoard* status;$/;"	m	class:Board
 status	StatusBoard.h	/^        char status[18][18];$/;"	m	class:StatusBoard
 stun	Unit.h	/^					bool stun;$/;"	m	class:Unit
 stunturn	Unit.h	/^					int stunturn;$/;"	m	class:Unit
 swap	Board.cpp	/^void Board::swap(Cell*& _a, Cell*& _b)$/;"	f	class:Board
 team	Unit.h	/^					enum Team team;$/;"	m	class:Unit	typeref:enum:Unit::Team
+testFile	Board.cpp	/^bool Board::testFile(std::ifstream& file)$/;"	f	class:Board
 uni	Cell.h	/^        Unit* uni;$/;"	m	class:Cell
 unit	Cell.h	/^        enum UnitType unit;$/;"	m	class:Cell	typeref:enum:Cell::UnitType
 ~Board	Board.cpp	/^Board::~Board()$/;"	f	class:Board

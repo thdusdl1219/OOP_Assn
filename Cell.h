@@ -41,6 +41,8 @@ class Cell
         void setUnitDir(enum Direction _dir);
 				void setUnitstun(bool _stun);
 				bool getUnitstun();
+				int getUnitstunturn();
+				void setUnitstunturn(int);
 				bool getseam();
 				void setseam(bool);
 				bool getHyper();

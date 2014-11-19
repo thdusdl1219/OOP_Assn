@@ -41,6 +41,20 @@ bool Cell::getUnitstun() // 유닛의 스턴 상태를 얻어오는 함수
 		return false;
 }
 
+void Cell::setUnitstunturn(int turn)
+{
+	if(uni != NULL)
+		uni->setturn(turn);
+}
+
+int Cell::getUnitstunturn()
+{
+	if(uni != NULL)
+		return uni->getturn();
+	else
+		return 0;
+}
+
 Cell::~Cell()
 {
     if(uni != NULL)
