@@ -1,5 +1,6 @@
 #include "Cell.h"
-
+#include <iostream>
+using namespace std;
 Cell::Cell(int _row, int _col, Board* b)
 {
 	row = _row;

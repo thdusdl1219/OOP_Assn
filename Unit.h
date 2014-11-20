@@ -35,6 +35,8 @@ class Unit
 					void swap(Cell*&, Cell*&);
 					Cell* get_cell();
 					void set_cell(Cell* newcell);
+					Board* get_board();
+
 					virtual ~Unit(){}
 };
 #endif

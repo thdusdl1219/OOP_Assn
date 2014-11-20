@@ -1,6 +1,7 @@
 #include "HyperMirror.h"
 #include <iostream>
 #include "Cell.h"
+#include "Board.h"
 using namespace std;
 HyperMirror::HyperMirror(Cell* _cell, Board* b) : Mirror(_cell,b){}
 int HyperMirror::Rotate()
@@ -89,4 +90,33 @@ void HyperMirror::printUnit(char status[18][18])
 		}
 
 	}
+}
+
+
+Cell* HyperMirror::beamCurUnit()
+{
+	switch((int)get_dir())
+	{
+		case 1:
+			if(get_board()->getBeamdir() == UP)
+				get_board()->setBeamdir(LEFT);
+			else if(get_board()->getBeamdir() == DOWN)
+				get_board()->setBeamdir(RIGHT);
+			else if(get_board()->getBeamdir() == LEFT)
+				get_board()->setBeamdir(UP);
+			else
+				get_board()->setBeamdir(DOWN);
+			break;
+		case 2:
+			if(get_board()->getBeamdir() == UP)
+				get_board()->setBeamdir(RIGHT);
+			else if(get_board()->getBeamdir() == DOWN)
+				get_board()->setBeamdir(LEFT);
+			else if(get_board()->getBeamdir() == LEFT)
+				get_board()->setBeamdir(DOWN);
+			else
+				get_board()->setBeamdir(UP);
+			break;
+	}
+	return NULL;
 }

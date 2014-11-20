@@ -1,6 +1,7 @@
 #include "King.h"
 #include <iostream>
 #include "Cell.h"
+#include "Board.h"
 using namespace std;
 King::King(Cell* _cell, Board* b) : Unit(_cell,b)
 {
@@ -56,10 +57,10 @@ void King::printUnit(char status[18][18])
 
 Cell* King::beamCurUnit()
 {
-	if(board->getattack())
+	if(get_board()->getattack())
 		set_enable(false);
 	else
-		cell->Stun();
+		get_cell()->Stun();
 	
-	return cell;
+	return get_cell();
 }

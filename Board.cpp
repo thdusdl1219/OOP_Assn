@@ -14,8 +14,10 @@ Board::Board() // 초기화한다.
 			cell[i*9+j] = new Cell(i, j, this);
 		}
 	}	
-	status = new StatusBoard ();
+	status = new StatusBoard (this);
 	srand(time(NULL));
+	attack = false;
+	Beamdir = UP;
 }
 
 Board::~Board()
@@ -25,6 +27,7 @@ Board::~Board()
 		delete cell[i];
 		cell[i] = NULL;
 	}
+	delete status;
 }
 
 /* laser의 방향에 따라서 laser을 가동시키는 함수 */
@@ -38,7 +41,7 @@ Cell* Board::launchLaser(Cell* _startcell )
 		Cell* check2 = NULL;
 		int tmprow = _startcell->getrow();
 		int tmpcol = _startcell->getcol();
-		enum Direction tmpdir = status->getBeamdir();
+		enum Direction tmpdir = getBeamdir();
 		switch(tmpdir)
 		{
 			case UP: // 빔 방향에 따라 나눔
@@ -55,7 +58,7 @@ Cell* Board::launchLaser(Cell* _startcell )
 						}
 						break;
 					}
-					if(status->getBeamdir() != tmpdir) // 중간에 빔이 반사되거나 하는 이유로 빔의 방향이 바뀌게 되면 check를 1로 변화시켜서 다시 루프에 빠지게 만든다.
+					if(getBeamdir() != tmpdir) // 중간에 빔이 반사되거나 하는 이유로 빔의 방향이 바뀌게 되면 check를 1로 변화시켜서 다시 루프에 빠지게 만든다.
 					{
 						_startcell = cell[i*9+tmpcol];
 						check = 1;
@@ -77,7 +80,7 @@ Cell* Board::launchLaser(Cell* _startcell )
 						}
 						break;
 					}
-					if(status->getBeamdir() != tmpdir)
+					if(getBeamdir() != tmpdir)
 					{
 						_startcell = cell[i*9+tmpcol];
 						check = 1;
@@ -99,7 +102,7 @@ Cell* Board::launchLaser(Cell* _startcell )
 						}
 						break;
 					}
-					if(status->getBeamdir() != tmpdir)
+					if(getBeamdir() != tmpdir)
 					{
 						_startcell = cell[tmprow*9+i];
 						check = 1;
@@ -121,7 +124,7 @@ Cell* Board::launchLaser(Cell* _startcell )
 						}
 						break;
 					}
-					if(status->getBeamdir() != tmpdir)
+					if(getBeamdir() != tmpdir)
 					{
 						_startcell = cell[tmprow*9+i];
 						check = 1;
@@ -151,304 +154,8 @@ Cell* Board::beamCurCell(Cell* _cell)
     	status->setBeam(_cell->getrow(), _cell->getcol(), true);
 		else
 		{
-
-		}
-    switch((int)_cell->getUnit()) // 유닛에 따라 나눈다.
-    {
-        case 0:
-            status->setBeam(_cell->getrow(), _cell->getcol(), true);
-            break;
-        case 1:
-					if(getattack())
-					{
-           _cell->getUni()->set_enable(false); // 왕 죽음
-					}
-					else
-						Stun(_cell);
-					result = _cell;
-          break;
-        case 3:
-          switch(_cell->getUnitDir())
-          {
-              case UP:
-                  if(status->getBeamdir() != DOWN)
-                  {
-											if(getattack())
-											{
-												cout << "[System] Player "<< _cell->getUnitTeam() <<"'s Unit at ("<< tmprow <<" "<< tmpcol <<") is in destroyed." << endl;
-											}
-											else
-												Stun(_cell);
-											result = _cell;
-                  }
-                  else
-                  {
-                      cout << "[System] BlockMirror blocked laser" << endl;
-											status->setBeamdir(UP);
-											result = _cell;
-                  }
-                  break;
-              case DOWN:
-                   if(status->getBeamdir() != UP)
-                  {
-											if(getattack())
-											{
-												cout << "[System] Player "<< _cell->getUnitTeam() <<"'s Unit at ("<< tmprow <<" "<< tmpcol <<") is in destroyed." << endl;
-											}
-											else
-												Stun(_cell);
-											result = _cell;
-                  }
-                  else
-                  {
-                      cout << "[System] BlockMirror blocked laser" << endl;
-											status->setBeamdir(DOWN);
-											result = _cell;
-                  }
-                 break;
-              case LEFT:
-                   if(status->getBeamdir() != RIGHT)
-                  {
-											if(getattack())
-											{
-												cout << "[System] Player "<< _cell->getUnitTeam() <<"'s Unit at ("<< tmprow <<" "<< tmpcol <<") is in destroyed." << endl;
-											}
-											else
-												Stun(_cell);
-											result = _cell;
-                  }
-                  else
-                  {
-                      cout << "[System] BlockMirror blocked laser" << endl;
-											status->setBeamdir(LEFT);
-											result = _cell;
-                  }
-                 break;
-              case RIGHT:
-                   if(status->getBeamdir() != LEFT)
-                  {
-											if(getattack())
-											{
-												cout << "[System] Player "<< _cell->getUnitTeam() <<"'s Unit at ("<< tmprow <<" "<< tmpcol <<") is in destroyed." << endl;
-											}
-											else
-												Stun(_cell);
-											result = _cell;
-                  }
-                  else
-                  {
-                      cout << "[System] BlockMirror blocked laser" << endl;
-											status->setBeamdir(RIGHT);
-											result = _cell;
-                  }
-                 break;
-          }
-          break;
-        case 4:
-          switch((int)_cell->getUnitDir())
-          {
-              case 1:
-                  if(status->getBeamdir() == DOWN || status->getBeamdir() == LEFT)
-                  {
-											if(getattack())
-												cout << "[System] Player "<< _cell->getUnitTeam() <<"'s Unit at ("<< tmprow <<" "<< tmpcol <<") is in destroyed." << endl;
-											else
-												Stun(_cell);
-											result = _cell;
-                  }
-                  else if(status->getBeamdir() == UP)
-                      status->setBeamdir(LEFT); // 빔의 방향을 바꾼다. -> 반사시킨다.
-                  else
-                      status->setBeamdir(DOWN);
-                  break;
-              case 2:
-                   if(status->getBeamdir() == DOWN || status->getBeamdir() == RIGHT)
-                  {
-                      result = _cell;
-											if(getattack())
-												cout << "[System] Player "<< _cell->getUnitTeam() <<"'s Unit at ("<< tmprow <<" "<< tmpcol <<") is in destroyed." << endl;
-											else
-												Stun(_cell);	
-                  }
-                  else if(status->getBeamdir() == UP)
-                      status->setBeamdir(RIGHT);
-                  else
-                      status->setBeamdir(DOWN);
-                 break;
-              case 3:
-                   if(status->getBeamdir() == UP || status->getBeamdir() == RIGHT)
-                  {
-                      result = _cell;
-											if(getattack())
-												cout << "[System] Player "<< _cell->getUnitTeam() <<"'s Unit at ("<< tmprow <<" "<< tmpcol <<") is in destroyed." << endl;
-											else
-												Stun(_cell);	
-                  }
-                  else if(status->getBeamdir() == DOWN)
-                      status->setBeamdir(RIGHT);
-                  else
-                      status->setBeamdir(UP);
-                  break;
-              case 4:
-                   if(status->getBeamdir() == UP || status->getBeamdir() == LEFT)
-                  {
-                      result = _cell;
-											if(getattack())
-												cout << "[System] Player "<< _cell->getUnitTeam() <<"'s Unit at ("<< tmprow <<" "<< tmpcol <<") is in destroyed." << endl;
-											else
-												Stun(_cell);	
-                  }
-                  else if(status->getBeamdir() == DOWN)
-                      status->setBeamdir(LEFT);
-                  else
-                      status->setBeamdir(UP);
-                 break;
-          }
-          break;
-        case 5:
-          switch((int)_cell->getUnitDir())
-          {
-              case 1:
-                  if(status->getBeamdir() == UP)
-                      status->setBeamdir(LEFT);
-                  else if(status->getBeamdir() == DOWN)
-                      status->setBeamdir(RIGHT);
-                  else if(status->getBeamdir() == LEFT)
-                      status->setBeamdir(UP);
-                  else
-                      status->setBeamdir(DOWN);
-                  break;
-              case 2:
-                  if(status->getBeamdir() == UP)
-                      status->setBeamdir(RIGHT);
-                  else if(status->getBeamdir() == DOWN)
-                      status->setBeamdir(LEFT);
-                  else if(status->getBeamdir() == LEFT)
-                      status->setBeamdir(DOWN);
-                  else
-                      status->setBeamdir(UP);
-                  break;
-          }
-          break;
-        case 7:
-          switch((int)_cell->getUnitDir())
-          {
-              case 1:
-                  if(status->getBeamdir() == DOWN || status->getBeamdir() == LEFT)
-                  {
-											if(getattack())
-												cout << "[System] Player "<< _cell->getUnitTeam() <<"'s Unit at ("<< tmprow <<" "<< tmpcol <<") is in destroyed." << endl;
-											else
-												Stun(_cell);	
-											result = _cell;
-                  }
-                  else if(status->getBeamdir() == UP)
-									{
-											remove = launchLaser(_cell);
-											if(remove != NULL && getattack())
-											{				
-												remove->setseam(true);
-											}
-                      status->setBeamdir(LEFT); // 빔의 방향을 바꾼다. -> 반사시킨다.
-									}
-                  else
-									{
-											remove = launchLaser(_cell);
- 											if(remove != NULL && getattack())
-											{			
-												remove->setseam(true);
-											}
-                     status->setBeamdir(DOWN);
-									}
-                  break;
-              case 2:
-                   if(status->getBeamdir() == DOWN || status->getBeamdir() == RIGHT)
-                  {
-                      result = _cell;
-											if(getattack())
-												cout << "[System] Player "<< _cell->getUnitTeam() <<"'s Unit at ("<< tmprow <<" "<< tmpcol <<") is in destroyed." << endl;
-											else
-												Stun(_cell);	
-                  }
-                  else if(status->getBeamdir() == UP)
-									{
-											remove = launchLaser(_cell);
- 											if(remove != NULL && getattack())
-											{				
-												remove->setseam(true);
-											}
-                     status->setBeamdir(RIGHT);
-									}
-                  else
-									{
-											remove = launchLaser(_cell);
- 											if(remove != NULL && getattack())
-											{				
-												remove->setseam(true);
-											}
-                     status->setBeamdir(DOWN);
-									}
-                 break;
-              case 3:
-                   if(status->getBeamdir() == UP || status->getBeamdir() == RIGHT)
-                  {
-                      result = _cell;
-											if(getattack())
-												cout << "[System] Player "<< _cell->getUnitTeam() <<"'s Unit at ("<< tmprow <<" "<< tmpcol <<") is in destroyed." << endl;
-											else
-												Stun(_cell);	
-                  }
-                  else if(status->getBeamdir() == DOWN)
-									{
-											remove = launchLaser(_cell);
- 											if(remove != NULL && getattack())
-											{				
-												remove->setseam(true);
-											}
-                     status->setBeamdir(RIGHT);
-									}
-                  else
-									{
-											remove = launchLaser(_cell);
- 											if(remove != NULL && getattack())
-											{				
-												remove->setseam(true);
-											}
-                     status->setBeamdir(UP);
-									}
-                  break;
-              case 4:
-                   if(status->getBeamdir() == UP || status->getBeamdir() == LEFT)
-                  {
-                      result = _cell;
-											if(getattack())
-												cout << "[System] Player "<< _cell->getUnitTeam() <<"'s Unit at ("<< tmprow <<" "<< tmpcol <<") is in destroyed." << endl;
-											else
-												Stun(_cell);	
-                  }
-                  else if(status->getBeamdir() == DOWN)
-									{
-											remove = launchLaser(_cell);
- 											if(remove != NULL && getattack())
-											{				
-												remove->setseam(true);
-											}
-                     status->setBeamdir(LEFT);
-									}
-                  else
-									{
-											remove = launchLaser(_cell);
- 											if(remove != NULL && getattack())
-											{				
-												remove->setseam(true);
-											}
-                     status->setBeamdir(UP);
-									}
-                 break;
-          }
-          break;
-
-    }
+			result = uni->beamCurUnit();
+		}   
     return result;
 }
 /* 게임을 초기화한다. */
@@ -572,11 +279,11 @@ Cell* Board::choiceLaser() // Laser를 고르고 launch시키는 함수
             switch((int)cell[0]->getUni()->get_dir())
             {
                 case 1:
-                    status->setBeamdir(DOWN);
+                    setBeamdir(DOWN);
                     remove = launchLaser(cell[0]);
                     break;
                 case 2:
-                    status->setBeamdir(RIGHT);
+                    setBeamdir(RIGHT);
                     remove = launchLaser(cell[0]);
                     break;
             }
@@ -586,11 +293,11 @@ Cell* Board::choiceLaser() // Laser를 고르고 launch시키는 함수
             switch((int)cell[8]->getUni()->get_dir())
             {
                 case 1:
-                    status->setBeamdir(DOWN);
+                    setBeamdir(DOWN);
                     remove = launchLaser(cell[8]);
                     break;
                 case 2:
-                    status->setBeamdir(LEFT);
+                    setBeamdir(LEFT);
                     remove = launchLaser(cell[8]);
                     break;
 						}
@@ -602,11 +309,11 @@ Cell* Board::choiceLaser() // Laser를 고르고 launch시키는 함수
             switch((int)cell[72]->getUni()->get_dir())
             {
                 case 1:
-                    status->setBeamdir(UP);
+                    setBeamdir(UP);
                     remove = launchLaser(cell[72]);
                     break;
                 case 2:
-                    status->setBeamdir(RIGHT);
+                    setBeamdir(RIGHT);
                     remove = launchLaser(cell[72]);
                     break;
             }
@@ -616,11 +323,11 @@ Cell* Board::choiceLaser() // Laser를 고르고 launch시키는 함수
             switch((int)cell[80]->getUni()->get_dir())
             {
                 case 1:
-                    status->setBeamdir(UP);
+                    setBeamdir(UP);
                     remove = launchLaser(cell[80]);
                     break;
                 case 2:
-                    status->setBeamdir(LEFT);
+                    setBeamdir(LEFT);
                     remove = launchLaser(cell[80]);
                     break;
             }
@@ -912,5 +619,8 @@ void Board::saveGame()
 	outfile.close();
 }
 
-bool getattack(){return attack;}
-void setattack(bool a){attack = a;}
+bool Board::getattack(){return attack;}
+void Board::setattack(bool a){attack = a;}
+
+enum Direction Board::getBeamdir(){return Beamdir;}
+void Board::setBeamdir(enum Direction _dir){Beamdir = _dir;}

@@ -1,18 +1,16 @@
 #include "StatusBoard.h"
+#include "Board.h"
 #include <iostream>
 
 using namespace std;
 
-StatusBoard::StatusBoard()
+StatusBoard::StatusBoard(Board* b)
 {
     this->reset();
 		this->resetBeam();
-    Beamdir = UP;
-		attack = false;
+		board = b;
 }
 void StatusBoard::setBeam(int _row, int _col, bool _a){beam[_row][_col] = _a;}
-enum Direction StatusBoard::getBeamdir(){ return Beamdir; }
-void StatusBoard::setBeamdir(enum Direction _dir){Beamdir = _dir;}
 
 void StatusBoard::reset() // status를 공백으로 초기화한다.
 {
@@ -114,7 +112,7 @@ void StatusBoard::setBeam() // 빔을 설정한다.
         {
             if(beam[i][j] == true)
             {
-								if(attack)
+								if(board->getattack())
 								{
                 	status[i*2][j*2] = '*';
                 	status[i*2+1][j*2] = '*';

@@ -20,12 +20,11 @@ class Board
 				Unit* king[2];
         StatusBoard* status;
 				bool attack;
+				enum Direction Beamdir;
+
 				
-				bool getattack();
-				void setattack(bool);
 
         void initGame();
-        Cell* launchLaser(Cell* _startcell);
         Cell* beamCurCell(Cell* _cell);
 				Cell* choiceLaser();
         void showBoard();
@@ -36,6 +35,12 @@ class Board
         Board ();
         void startGame(bool);
 				bool loadGame(std::ifstream&);
+				enum Direction getBeamdir();
+				void setBeamdir(enum Direction);
+
+        Cell* launchLaser(Cell* _startcell);
+				void setattack(bool);
+				bool getattack();
 				Cell** getCell(int);
         ~Board();
 };

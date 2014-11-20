@@ -13,7 +13,7 @@ Unit::Unit(Cell* _cell, Board* b) // 모든 유닛들의 부모 클래스인 Uni
 				stunturn = 0;
 				board = b;
 }
-
+Board* Unit::get_board(){return board;}
 enum Direction Unit::get_dir(){return dir;}
 void Unit::set_dir(enum Direction dirr){dir = dirr;}
 enum Team Unit::get_team(){return team;}

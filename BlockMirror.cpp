@@ -1,5 +1,8 @@
 #include "BlockMirror.h"
 #include "Cell.h"
+#include <iostream>
+#include "Board.h"
+using namespace std;
 BlockMirror::BlockMirror(Cell* _cell, Board* b) : Mirror(_cell,b){}
 
 void BlockMirror::printUnit(char status[18][18])
@@ -66,3 +69,85 @@ void BlockMirror::printUnit(char status[18][18])
 	}
 }
 
+Cell* BlockMirror::beamCurUnit()
+{
+	char tmprow = get_cell()->getrow() + 65;
+	char tmpcol = get_cell()->getcol() + 49;
+	Cell* result = NULL;
+	switch(get_dir())
+	{
+		case UP:
+			if(get_board()->getBeamdir() != DOWN)
+			{
+				if(get_board()->getattack())
+				{
+					cout << "[System] Player "<< get_team() <<"'s Unit at ("<< tmprow <<" "<< tmpcol <<") is in destroyed." << endl;
+				}
+				else
+					get_cell()->Stun();
+				result = get_cell();
+			}
+			else
+			{
+				cout << "[System] BlockMirror blocked laser" << endl;
+				get_board()->setBeamdir(UP);
+				result = get_cell();
+			}
+			break;
+		case DOWN:
+			if(get_board()->getBeamdir() != UP)
+			{
+				if(get_board()->getattack())
+				{
+					cout << "[System] Player "<< get_team() <<"'s Unit at ("<< tmprow <<" "<< tmpcol <<") is in destroyed." << endl;
+				}
+				else
+					get_cell()->Stun();
+				result = get_cell();
+			}
+			else
+			{
+				cout << "[System] BlockMirror blocked laser" << endl;
+				get_board()->setBeamdir(DOWN);
+				result = get_cell();
+			}
+			break;
+		case LEFT:
+			if(get_board()->getBeamdir() != RIGHT)
+			{
+				if(get_board()->getattack())
+				{
+					cout << "[System] Player "<< get_team() <<"'s Unit at ("<< tmprow <<" "<< tmpcol <<") is in destroyed." << endl;
+				}
+				else
+					get_cell()->Stun();
+				result = get_cell();
+			}
+			else
+			{
+				cout << "[System] BlockMirror blocked laser" << endl;
+				get_board()->setBeamdir(LEFT);
+				result = get_cell();
+			}
+			break;
+		case RIGHT:
+			if(get_board()->getBeamdir() != LEFT)
+			{
+				if(get_board()->getattack())
+				{
+					cout << "[System] Player "<< get_team() <<"'s Unit at ("<< tmprow <<" "<< tmpcol <<") is in destroyed." << endl;
+				}
+				else
+					get_cell()->Stun();
+				result = get_cell();
+			}
+			else
+			{
+				cout << "[System] BlockMirror blocked laser" << endl;
+				get_board()->setBeamdir(RIGHT);
+				result = get_cell();
+			}
+			break;
+	}
+	return result;
+}	
