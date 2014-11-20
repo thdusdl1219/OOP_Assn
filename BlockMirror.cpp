@@ -91,6 +91,7 @@ Cell* BlockMirror::beamCurUnit()
 			{
 				cout << "[System] BlockMirror blocked laser" << endl;
 				get_board()->setBeamdir(UP);
+				get_cell()->set_block(true);
 				result = get_cell();
 			}
 			break;
@@ -109,6 +110,7 @@ Cell* BlockMirror::beamCurUnit()
 			{
 				cout << "[System] BlockMirror blocked laser" << endl;
 				get_board()->setBeamdir(DOWN);
+				get_cell()->set_block(true);
 				result = get_cell();
 			}
 			break;
@@ -127,6 +129,7 @@ Cell* BlockMirror::beamCurUnit()
 			{
 				cout << "[System] BlockMirror blocked laser" << endl;
 				get_board()->setBeamdir(LEFT);
+				get_cell()->set_block(true);
 				result = get_cell();
 			}
 			break;
@@ -145,6 +148,7 @@ Cell* BlockMirror::beamCurUnit()
 			{
 				cout << "[System] BlockMirror blocked laser" << endl;
 				get_board()->setBeamdir(RIGHT);
+				get_cell()->set_block(true);
 				result = get_cell();
 			}
 			break;

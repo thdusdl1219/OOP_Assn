@@ -10,6 +10,8 @@
 #include "StunLaser.h"
 #include "BeamSplitter.h"
 #include <iostream>
+#include <fstream>
+using namespace std;
 class Board;
 class Cell
 {
@@ -50,6 +52,8 @@ class Cell
 				bool get_block();
 				void set_block(bool);
 				void Stun();
+
+				friend ofstream& operator<<(ofstream &out, Cell* &c);
         ~Cell();
 };
 #endif

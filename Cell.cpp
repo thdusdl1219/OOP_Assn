@@ -157,3 +157,11 @@ void Cell::setUnitDir(enum Direction _dir) // 셀에 있는 유닛의 방향을 
 }
 
 
+ofstream& operator<<(ofstream &out, Cell* &c)
+{
+	if(c->getHyper())
+		out << c->getUnitTeam() << c->getUnitDir() << 8 << 0 << 0;
+	else
+		out << c->getUnitTeam() << c->getUnitDir() << c->getUnit() << c->getUnitstun() << c->getUnitstunturn();
+	return out;
+}

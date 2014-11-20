@@ -6,70 +6,81 @@
 !_TAG_PROGRAM_VERSION	5.8	//
 ATTACKLASERH	AttackLaser.h	/^#define ATTACKLASERH$/;"	d
 ATTLASER	Global.h	/^    ATTLASER,$/;"	e	enum:UnitType
-AttackLaser	AttackLaser.cpp	/^AttackLaser::AttackLaser(Cell* _cell) : Laser(_cell){}$/;"	f	class:AttackLaser
+AttackLaser	AttackLaser.cpp	/^AttackLaser::AttackLaser(Cell* _cell, Board* b) : Laser(_cell, b){}$/;"	f	class:AttackLaser
 AttackLaser	AttackLaser.h	/^class AttackLaser : public Laser$/;"	c
 BEAMSPLITTERH	BeamSplitter.h	/^#define BEAMSPLITTERH$/;"	d
 BLOCKMIRROR	Global.h	/^    BLOCKMIRROR,$/;"	e	enum:UnitType
 BLOCKMIRRORH	BlockMirror.h	/^#define BLOCKMIRRORH$/;"	d
 BOARDH	Board.h	/^#define BOARDH$/;"	d
-BeamSplitter	BeamSplitter.cpp	/^BeamSplitter::BeamSplitter(Cell* _cell) : Mirror(_cell) {}$/;"	f	class:BeamSplitter
+BeamSplitter	BeamSplitter.cpp	/^BeamSplitter::BeamSplitter(Cell* _cell, Board* b) : Mirror(_cell, b) {}$/;"	f	class:BeamSplitter
 BeamSplitter	BeamSplitter.h	/^class BeamSplitter : public Mirror$/;"	c
-Beamdir	StatusBoard.h	/^        enum Direction Beamdir;$/;"	m	class:StatusBoard	typeref:enum:StatusBoard::Direction
-BlockMirror	BlockMirror.cpp	/^BlockMirror::BlockMirror(Cell* _cell) : Mirror(_cell)$/;"	f	class:BlockMirror
+Beamdir	Board.h	/^				enum Direction Beamdir;$/;"	m	class:Board	typeref:enum:Board::Direction
+BlockMirror	BlockMirror.cpp	/^BlockMirror::BlockMirror(Cell* _cell, Board* b) : Mirror(_cell,b){}$/;"	f	class:BlockMirror
 BlockMirror	BlockMirror.h	/^class BlockMirror : public Mirror$/;"	c
 Board	Board.cpp	/^Board::Board() \/\/ 초기화한다.$/;"	f	class:Board
 Board	Board.h	/^class Board$/;"	c
 CELLH	Cell.h	/^#define CELLH$/;"	d
-Cell	Cell.cpp	/^Cell::Cell(int _row, int _col)$/;"	f	class:Cell
+Cell	Cell.cpp	/^Cell::Cell(int _row, int _col, Board* b)$/;"	f	class:Cell
 Cell	Cell.h	/^class Cell$/;"	c
 DOWN	Global.h	/^    DOWN = 3,$/;"	e	enum:Direction
 Direction	Global.h	/^enum Direction$/;"	g
 GLOBALH	Global.h	/^#define GLOBALH$/;"	d
 HYPERMIRROR	Global.h	/^    HYPERMIRROR,$/;"	e	enum:UnitType
 HYPERMIRRORH	HyperMirror.h	/^#define HYPERMIRRORH$/;"	d
-HyperMirror	HyperMirror.cpp	/^HyperMirror::HyperMirror(Cell* _cell) : Mirror(_cell)$/;"	f	class:HyperMirror
+HyperMirror	HyperMirror.cpp	/^HyperMirror::HyperMirror(Cell* _cell, Board* b) : Mirror(_cell,b){}$/;"	f	class:HyperMirror
 HyperMirror	HyperMirror.h	/^class HyperMirror : public Mirror$/;"	c
 KING	Global.h	/^    KING,$/;"	e	enum:UnitType
 KINGH	King.h	/^#define KINGH$/;"	d
-King	King.cpp	/^King::King(Cell* _cell) : Unit(_cell)$/;"	f	class:King
+King	King.cpp	/^King::King(Cell* _cell, Board* b) : Unit(_cell,b)$/;"	f	class:King
 King	King.h	/^class King : public Unit$/;"	c
 LASERH	Laser.h	/^#define LASERH$/;"	d
 LEFT	Global.h	/^    LEFT = 2,$/;"	e	enum:Direction
-Laser	Laser.cpp	/^Laser::Laser(Cell* _cell) : Unit(_cell){}$/;"	f	class:Laser
+Laser	Laser.cpp	/^Laser::Laser(Cell* _cell, Board* b) : Unit(_cell, b){}$/;"	f	class:Laser
 Laser	Laser.h	/^class Laser : public Unit$/;"	c
 MIRRORH	Mirror.h	/^#define MIRRORH$/;"	d
-Mirror	Mirror.cpp	/^Mirror::Mirror(Cell* _cell) : Unit(_cell) {}$/;"	f	class:Mirror
+Mirror	Mirror.cpp	/^Mirror::Mirror(Cell* _cell, Board* b) : Unit(_cell, b) {}$/;"	f	class:Mirror
 Mirror	Mirror.h	/^class Mirror : public Unit$/;"	c
 NONE	Global.h	/^    NONE,$/;"	e	enum:UnitType
 ONE	Global.h	/^    ONE = 1,$/;"	e	enum:Team
 RIGHT	Global.h	/^    RIGHT = 4,$/;"	e	enum:Direction
-Rotate	Board.cpp	/^void Board::Rotate(Cell** curcell) \/\/ 유닛이 회전하는 경우를 처리하는 함수 2$/;"	f	class:Board
-Rotate_only	Board.cpp	/^int Board::Rotate_only(Cell** curcell) \/\/ 유닛이 회전하는 경우를 처리하는 함수$/;"	f	class:Board
+Rotate	HyperMirror.cpp	/^int HyperMirror::Rotate()$/;"	f	class:HyperMirror
+Rotate	Laser.cpp	/^int Laser::Rotate()$/;"	f	class:Laser
+Rotate	Unit.cpp	/^int Unit::Rotate()$/;"	f	class:Unit
 SPLITTER	Global.h	/^		SPLITTER,$/;"	e	enum:UnitType
 STATUSBOARDH	StatusBoard.h	/^#define STATUSBOARDH$/;"	d
 STULASER	Global.h	/^		STULASER,$/;"	e	enum:UnitType
 STUNLASERH	StunLaser.h	/^#define STUNLASERH$/;"	d
-StatusBoard	StatusBoard.cpp	/^StatusBoard::StatusBoard()$/;"	f	class:StatusBoard
+StatusBoard	StatusBoard.cpp	/^StatusBoard::StatusBoard(Board* b)$/;"	f	class:StatusBoard
 StatusBoard	StatusBoard.h	/^class StatusBoard$/;"	c
-Stun	Board.cpp	/^void Board::Stun(Cell* _cell) \/\/ 스턴상태에 빠졌을 경우를 처리하는 함수$/;"	f	class:Board
-StunLaser	StunLaser.cpp	/^StunLaser::StunLaser(Cell* _cell) : Laser(_cell){}$/;"	f	class:StunLaser
+Stun	Cell.cpp	/^void Cell::Stun()$/;"	f	class:Cell
+StunLaser	StunLaser.cpp	/^StunLaser::StunLaser(Cell* _cell,Board* b) : Laser(_cell,b ){}$/;"	f	class:StunLaser
 StunLaser	StunLaser.h	/^class StunLaser : public Laser$/;"	c
 TRIMIRROR	Global.h	/^    TRIMIRROR,$/;"	e	enum:UnitType
 TRIMIRRORH	TriMirror.h	/^#define TRIMIRRORH$/;"	d
 TWO	Global.h	/^    TWO = 2,$/;"	e	enum:Team
 Team	Global.h	/^enum Team$/;"	g
-TriMirror	TriMirror.cpp	/^TriMirror::TriMirror(Cell* _cell) : Mirror(_cell)$/;"	f	class:TriMirror
+TriMirror	TriMirror.cpp	/^TriMirror::TriMirror(Cell* _cell, Board* b) : Mirror(_cell,b){}$/;"	f	class:TriMirror
 TriMirror	TriMirror.h	/^class TriMirror : public Mirror$/;"	c
 UNITH	Unit.h	/^#define UNITH$/;"	d
 UP	Global.h	/^    UP = 1,$/;"	e	enum:Direction
-Unit	Unit.cpp	/^Unit::Unit(Cell* _cell) \/\/ 모든 유닛들의 부모 클래스인 Unit을 초기화하는 함수$/;"	f	class:Unit
-Unit	Unit.h	/^class Unit : public Board$/;"	c
-UnitMove	Unit.cpp	/^void Unit::UnitMove()$/;"	f	class:Unit
+Unit	Unit.cpp	/^Unit::Unit(Cell* _cell, Board* b) \/\/ 모든 유닛들의 부모 클래스인 Unit을 초기화하는 함수$/;"	f	class:Unit
+Unit	Unit.h	/^class Unit$/;"	c
+UnitMove	Unit.cpp	/^void Unit::UnitMove() \/\/ 유닛이 움직이는 경우를 처리하는 함수$/;"	f	class:Unit
 UnitType	Global.h	/^enum UnitType$/;"	g
 accesible	Cell.h	/^        bool accesible;$/;"	m	class:Cell
-attack	StatusBoard.h	/^				bool attack;$/;"	m	class:StatusBoard
+attack	Board.h	/^				bool attack;$/;"	m	class:Board
 beam	StatusBoard.h	/^        bool beam[9][9];$/;"	m	class:StatusBoard
 beamCurCell	Board.cpp	/^Cell* Board::beamCurCell(Cell* _cell)$/;"	f	class:Board
+beamCurUnit	BeamSplitter.cpp	/^Cell* BeamSplitter::beamCurUnit()$/;"	f	class:BeamSplitter
+beamCurUnit	BlockMirror.cpp	/^Cell* BlockMirror::beamCurUnit()$/;"	f	class:BlockMirror
+beamCurUnit	HyperMirror.cpp	/^Cell* HyperMirror::beamCurUnit()$/;"	f	class:HyperMirror
+beamCurUnit	King.cpp	/^Cell* King::beamCurUnit()$/;"	f	class:King
+beamCurUnit	Laser.h	/^				virtual Cell* beamCurUnit(){return 0;}	$/;"	f	class:Laser
+beamCurUnit	TriMirror.cpp	/^Cell* TriMirror::beamCurUnit()$/;"	f	class:TriMirror
+block_laser	Cell.h	/^				bool block_laser;$/;"	m	class:Cell
+board	Cell.h	/^				Board* board;$/;"	m	class:Cell
+board	StatusBoard.h	/^				Board* board;$/;"	m	class:StatusBoard
+board	Unit.h	/^					Board* board;$/;"	m	class:Unit
 boardCols	StatusBoard.h	/^        int boardCols;$/;"	m	class:StatusBoard
 boardRows	StatusBoard.h	/^        int boardRows;$/;"	m	class:StatusBoard
 cell	Board.h	/^        Cell* cell[81];$/;"	m	class:Board
@@ -78,11 +89,13 @@ choiceLaser	Board.cpp	/^Cell* Board::choiceLaser() \/\/ Laser를 고르고 launc
 col	Cell.h	/^        int row, col;$/;"	m	class:Cell
 cols	Board.h	/^        int rows, cols;$/;"	m	class:Board
 cols	StatusBoard.h	/^        int rows, cols;$/;"	m	class:StatusBoard
-control_unit	King.cpp	/^virtual int King::control_unit()$/;"	f	class:King
+control_unit	King.cpp	/^int King::control_unit()$/;"	f	class:King
+control_unit	Laser.cpp	/^int Laser::control_unit()$/;"	f	class:Laser
+control_unit	Mirror.cpp	/^int Mirror::control_unit()$/;"	f	class:Mirror
 dir	Unit.h	/^					enum Direction dir;$/;"	m	class:Unit	typeref:enum:Unit::Direction
 enabled	King.h	/^        bool enabled;$/;"	m	class:King
-getBeamdir	StatusBoard.cpp	/^enum Direction StatusBoard::getBeamdir(){ return Beamdir; }$/;"	f	class:StatusBoard
-getCell	Board.cpp	/^Cell* getCell(int i)$/;"	f
+getBeamdir	Board.cpp	/^enum Direction Board::getBeamdir(){return Beamdir;}$/;"	f	class:Board
+getCell	Board.cpp	/^Cell** Board::getCell(int i)$/;"	f	class:Board
 getHyper	Cell.cpp	/^bool Cell::getHyper(){return isHyper;}$/;"	f	class:Cell
 getUni	Cell.cpp	/^Unit* Cell::getUni(){return uni;}$/;"	f	class:Cell
 getUnit	Cell.cpp	/^enum UnitType Cell::getUnit(){return unit;}$/;"	f	class:Cell
@@ -90,29 +103,41 @@ getUnitDir	Cell.cpp	/^enum Direction Cell::getUnitDir() \/\/ 셀에 있는 유�
 getUnitTeam	Cell.cpp	/^enum Team Cell::getUnitTeam() \/\/ 셀에 있는 유낫의 팀을 리턴 $/;"	f	class:Cell
 getUnitstun	Cell.cpp	/^bool Cell::getUnitstun() \/\/ 유닛의 스턴 상태를 얻어오는 함수$/;"	f	class:Cell
 getUnitstunturn	Cell.cpp	/^int Cell::getUnitstunturn()$/;"	f	class:Cell
+get_block	Cell.cpp	/^bool Cell::get_block(){return block_laser;}$/;"	f	class:Cell
+get_board	Unit.cpp	/^Board* Unit::get_board(){return board;}$/;"	f	class:Unit
 get_cell	Unit.cpp	/^Cell* Unit::get_cell(){return cell;}$/;"	f	class:Unit
 get_dir	Unit.cpp	/^enum Direction Unit::get_dir(){return dir;}$/;"	f	class:Unit
 get_enable	King.cpp	/^bool King::get_enable(){return enabled;}$/;"	f	class:King
+get_enable	Unit.h	/^					virtual bool get_enable(){return true;}$/;"	f	class:Unit
 get_team	Unit.cpp	/^enum Team Unit::get_team(){return team;}$/;"	f	class:Unit
 getaccesible	Cell.cpp	/^bool Cell::getaccesible(){return accesible;}$/;"	f	class:Cell
-getattack	StatusBoard.cpp	/^bool StatusBoard::getattack() \/\/ 레이저가 어떤 상태인지를 반환한다.$/;"	f	class:StatusBoard
+getattack	Board.cpp	/^bool Board::getattack(){return attack;}$/;"	f	class:Board
 getcol	Cell.cpp	/^int Cell::getcol(){return col;}$/;"	f	class:Cell
+getcol	Unit.cpp	/^int Unit::getcol()$/;"	f	class:Unit
 getrow	Cell.cpp	/^int Cell::getrow(){return row;}$/;"	f	class:Cell
+getrow	Unit.cpp	/^int Unit::getrow()$/;"	f	class:Unit
 getseam	Cell.cpp	/^bool Cell::getseam(){return seam;}$/;"	f	class:Cell
 getstun	Unit.cpp	/^bool Unit::getstun(){return stun;}$/;"	f	class:Unit
 getturn	Unit.cpp	/^int Unit::getturn(){return stunturn;}$/;"	f	class:Unit
 incturn	Unit.cpp	/^int Unit::incturn(){return stunturn++;}$/;"	f	class:Unit
 initGame	Board.cpp	/^void Board::initGame()$/;"	f	class:Board
 isHyper	Cell.h	/^				bool isHyper;$/;"	m	class:Cell
-king	Board.h	/^        King* king[2];$/;"	m	class:Board
-laser	Board.h	/^        Laser* laser[4];$/;"	m	class:Board
+king	Board.h	/^				Unit* king[2];$/;"	m	class:Board
 launchLaser	Board.cpp	/^Cell* Board::launchLaser(Cell* _startcell )$/;"	f	class:Board
 loadGame	Board.cpp	/^bool Board::loadGame(std::ifstream& in)$/;"	f	class:Board
 main	main.cpp	/^int main()$/;"	f
 movableTo	Cell.cpp	/^bool Cell::movableTo() \/\/ 셀이 접근 가능한 곳인지 확인한다.$/;"	f	class:Cell
 ongoingTeam	Board.h	/^        enum Team ongoingTeam;$/;"	m	class:Board	typeref:enum:Board::Team
+operator <<	Board.cpp	/^ofstream& operator<<(ofstream &out, Cell* &c)$/;"	f
 printBeam	StatusBoard.cpp	/^void StatusBoard::printBeam() \/\/ 빔을 출력한다.$/;"	f	class:StatusBoard
 printStatus	StatusBoard.cpp	/^void StatusBoard::printStatus() \/\/ 게임 보드창을 출력한다.$/;"	f	class:StatusBoard
+printUnit	AttackLaser.cpp	/^void AttackLaser::printUnit(char status[18][18])$/;"	f	class:AttackLaser
+printUnit	BeamSplitter.cpp	/^void BeamSplitter::printUnit(char status[18][18])$/;"	f	class:BeamSplitter
+printUnit	BlockMirror.cpp	/^void BlockMirror::printUnit(char status[18][18])$/;"	f	class:BlockMirror
+printUnit	HyperMirror.cpp	/^void HyperMirror::printUnit(char status[18][18])$/;"	f	class:HyperMirror
+printUnit	King.cpp	/^void King::printUnit(char status[18][18])$/;"	f	class:King
+printUnit	StunLaser.cpp	/^void StunLaser::printUnit(char status[18][18])$/;"	f	class:StunLaser
+printUnit	TriMirror.cpp	/^void TriMirror::printUnit(char status[18][18])$/;"	f	class:TriMirror
 removeUnit	Cell.cpp	/^void Cell::removeUnit() \/\/ 셀에 있는 유닛을 삭제한다.$/;"	f	class:Cell
 reset	StatusBoard.cpp	/^void StatusBoard::reset() \/\/ status를 공백으로 초기화한다.$/;"	f	class:StatusBoard
 resetBeam	StatusBoard.cpp	/^void StatusBoard::resetBeam() \/\/ beam을 false로 초기화한다.$/;"	f	class:StatusBoard
@@ -123,7 +148,7 @@ saveGame	Board.cpp	/^void Board::saveGame()$/;"	f	class:Board
 seam	Cell.h	/^				bool seam;$/;"	m	class:Cell
 setBeam	StatusBoard.cpp	/^void StatusBoard::setBeam() \/\/ 빔을 설정한다.$/;"	f	class:StatusBoard
 setBeam	StatusBoard.cpp	/^void StatusBoard::setBeam(int _row, int _col, bool _a){beam[_row][_col] = _a;}$/;"	f	class:StatusBoard
-setBeamdir	StatusBoard.cpp	/^void StatusBoard::setBeamdir(enum Direction _dir){Beamdir = _dir;}$/;"	f	class:StatusBoard
+setBeamdir	Board.cpp	/^void Board::setBeamdir(enum Direction _dir){Beamdir = _dir;}$/;"	f	class:Board
 setCell	StatusBoard.cpp	/^void StatusBoard::setCell(Cell* cell) \/\/ 셀에 있는 유닛의 종류와 팀, 방향에 따라 유닛을 출력한다.$/;"	f	class:StatusBoard
 setHyper	Cell.cpp	/^void Cell::setHyper(bool _hy){isHyper = _hy;}$/;"	f	class:Cell
 setUnit	Cell.cpp	/^void Cell::setUnit(enum UnitType _unit) \/\/ 유닛의 타입을 받아서 유닛을 할당하는 함수.$/;"	f	class:Cell
@@ -131,12 +156,13 @@ setUnitDir	Cell.cpp	/^void Cell::setUnitDir(enum Direction _dir) \/\/ 셀에 있
 setUnitTeam	Cell.cpp	/^void Cell::setUnitTeam(enum Team _team) \/\/ 셀에 있는 유닛의 팀을 변경$/;"	f	class:Cell
 setUnitstun	Cell.cpp	/^void Cell::setUnitstun(bool _stun) \/\/ 유닛의 스턴 상태를 변경하는 함수$/;"	f	class:Cell
 setUnitstunturn	Cell.cpp	/^void Cell::setUnitstunturn(int turn)$/;"	f	class:Cell
+set_block	Cell.cpp	/^void Cell::set_block(bool b){block_laser = b;}$/;"	f	class:Cell
 set_cell	Unit.cpp	/^void Unit::set_cell(Cell* newcell){cell = newcell;}$/;"	f	class:Unit
 set_dir	Unit.cpp	/^void Unit::set_dir(enum Direction dirr){dir = dirr;}$/;"	f	class:Unit
-set_enable	King.cpp	/^void King::set_enable(bool en, enum Team kteam)$/;"	f	class:King
+set_enable	King.cpp	/^void King::set_enable(bool en)$/;"	f	class:King
 set_team	Unit.cpp	/^void Unit::set_team(enum Team yourteam){team = yourteam;}$/;"	f	class:Unit
 setaccesible	Cell.cpp	/^void Cell::setaccesible(bool _acc){accesible = _acc;}$/;"	f	class:Cell
-setattack	StatusBoard.cpp	/^void StatusBoard::setattack(bool _att) \/\/ 레이저가 어택상태인지 스턴상태인지를 결정한다.$/;"	f	class:StatusBoard
+setattack	Board.cpp	/^void Board::setattack(bool a){attack = a;}$/;"	f	class:Board
 setcol	Cell.cpp	/^int Cell::setcol(int _col){return col = _col;}$/;"	f	class:Cell
 setrow	Cell.cpp	/^int Cell::setrow(int _row){return row = _row;}$/;"	f	class:Cell
 setseam	Cell.cpp	/^void Cell::setseam(bool _se){seam = _se;}$/;"	f	class:Cell
@@ -149,10 +175,11 @@ status	Board.h	/^        StatusBoard* status;$/;"	m	class:Board
 status	StatusBoard.h	/^        char status[18][18];$/;"	m	class:StatusBoard
 stun	Unit.h	/^					bool stun;$/;"	m	class:Unit
 stunturn	Unit.h	/^					int stunturn;$/;"	m	class:Unit
-swap	Board.cpp	/^void Board::swap(Cell*& _a, Cell*& _b)$/;"	f	class:Board
+swap	Unit.cpp	/^void Unit::swap(Cell*& _a, Cell*& _b)$/;"	f	class:Unit
 team	Unit.h	/^					enum Team team;$/;"	m	class:Unit	typeref:enum:Unit::Team
 testFile	Board.cpp	/^bool Board::testFile(std::ifstream& file)$/;"	f	class:Board
 uni	Cell.h	/^        Unit* uni;$/;"	m	class:Cell
 unit	Cell.h	/^        enum UnitType unit;$/;"	m	class:Cell	typeref:enum:Cell::UnitType
 ~Board	Board.cpp	/^Board::~Board()$/;"	f	class:Board
 ~Cell	Cell.cpp	/^Cell::~Cell()$/;"	f	class:Cell
+~Unit	Unit.h	/^					virtual ~Unit(){}$/;"	f	class:Unit

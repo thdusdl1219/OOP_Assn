@@ -9,7 +9,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <fstream>
-
+using namespace std;
 
 class Board
 {
@@ -21,9 +21,6 @@ class Board
         StatusBoard* status;
 				bool attack;
 				enum Direction Beamdir;
-
-				
-
         void initGame();
         Cell* beamCurCell(Cell* _cell);
 				Cell* choiceLaser();
@@ -37,7 +34,6 @@ class Board
 				bool loadGame(std::ifstream&);
 				enum Direction getBeamdir();
 				void setBeamdir(enum Direction);
-
         Cell* launchLaser(Cell* _startcell);
 				void setattack(bool);
 				bool getattack();
