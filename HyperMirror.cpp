@@ -1,5 +1,6 @@
 #include "HyperMirror.h"
 #include <iostream>
+#include "Cell.h"
 using namespace std;
 HyperMirror::HyperMirror(Cell* _cell, Board* b) : Mirror(_cell,b){}
 int HyperMirror::Rotate()
@@ -47,4 +48,45 @@ int HyperMirror::Rotate()
 		}
 	}
 	return check;
+}
+
+void HyperMirror::printUnit(char status[18][18])
+{
+	if(get_team() == ONE)
+	{
+		switch(get_dir())
+		{
+			case UP:
+				status[get_cell()->getrow()*2][get_cell()->getcol()*2] = '\\';
+				status[get_cell()->getrow()*2+1][get_cell()->getcol()*2] = 'H';
+				status[get_cell()->getrow()*2][get_cell()->getcol()*2+1] = 'H';
+				status[get_cell()->getrow()*2+1][get_cell()->getcol()*2+1] = '\\';
+				break;
+			case LEFT:
+				status[get_cell()->getrow()*2][get_cell()->getcol()*2] = 'H';
+				status[get_cell()->getrow()*2+1][get_cell()->getcol()*2] = '/';
+				status[get_cell()->getrow()*2][get_cell()->getcol()*2+1] = '/';
+				status[get_cell()->getrow()*2+1][get_cell()->getcol()*2+1] = 'H';
+				break;
+		}
+	}
+	else
+	{
+		switch(get_dir())
+		{
+			case UP:
+				status[get_cell()->getrow()*2][get_cell()->getcol()*2] = '\\';
+				status[get_cell()->getrow()*2+1][get_cell()->getcol()*2] = 'h';
+				status[get_cell()->getrow()*2][get_cell()->getcol()*2+1] = 'h';
+				status[get_cell()->getrow()*2+1][get_cell()->getcol()*2+1] = '\\';
+				break;
+			case LEFT:
+				status[get_cell()->getrow()*2][get_cell()->getcol()*2] = 'h';
+				status[get_cell()->getrow()*2+1][get_cell()->getcol()*2] = '/';
+				status[get_cell()->getrow()*2][get_cell()->getcol()*2+1] = '/';
+				status[get_cell()->getrow()*2+1][get_cell()->getcol()*2+1] = 'h';
+				break;
+		}
+
+	}
 }

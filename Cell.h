@@ -21,6 +21,7 @@ class Cell
         Unit* uni;
 				bool isHyper;
 				Board* board;
+				bool block_laser;
     public:
         Cell(int _row, int _col, Board* b);
         Unit* getUni();
@@ -46,6 +47,9 @@ class Cell
 				void setseam(bool);
 				bool getHyper();
 				void setHyper(bool);
+				bool get_block();
+				void set_block(bool);
+				void Stun();
         ~Cell();
 };
 #endif

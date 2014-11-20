@@ -2,16 +2,26 @@
 
 Cell::Cell(int _row, int _col, Board* b)
 {
-    row = _row;
-    col = _col;
-    unit = NONE;
-		uni = NULL;
-    accesible = true;
-		seam = false;
-		isHyper = false;
-		board = b;
-
+	row = _row;
+	col = _col;
+	unit = NONE;
+	uni = NULL;
+	accesible = true;
+	seam = false;
+	isHyper = false;
+	board = b;
+	block_laser = false;
 }
+
+void Cell::Stun()
+{
+	char tmpcol = getcol() + 49;
+	char tmprow = getrow() + 65;
+	cout << "[System] Player "<< getUnitTeam() <<"'s Unit at ("<< tmprow <<" "<< tmpcol <<") is in stun." << endl;
+	setUnitstun(true);
+	getUni()->setturn(0);
+}
+
 
 bool Cell::getseam(){return seam;}
 void Cell::setseam(bool _se){seam = _se;}
@@ -19,6 +29,8 @@ void Cell::setseam(bool _se){seam = _se;}
 bool Cell::getHyper(){return isHyper;}
 void Cell::setHyper(bool _hy){isHyper = _hy;}
 
+bool Cell::get_block(){return block_laser;}
+void Cell::set_block(bool b){block_laser = b;}
 
 Unit* Cell::getUni(){return uni;}
 enum UnitType Cell::getUnit(){return unit;}

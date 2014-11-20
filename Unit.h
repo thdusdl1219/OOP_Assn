@@ -27,7 +27,8 @@ class Unit
 					virtual int control_unit() = 0;
 					virtual int Rotate();
 					virtual bool get_enable(){return true;}
-					virtual void set_enable(bool){}
+					virtual void printUnit(char[18][18]) = 0;
+					virtual Cell* beamCurUnit() = 0;	
 					void UnitMove();
 					int getrow();
 					int getcol();

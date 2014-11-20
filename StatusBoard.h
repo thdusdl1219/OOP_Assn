@@ -12,7 +12,6 @@ class StatusBoard
         int boardCols;
         bool beam[9][9];
         enum Direction Beamdir;
-				bool attack;
     public:
         StatusBoard();
         void setBeam(int _row, int _col, bool _a);
@@ -24,8 +23,6 @@ class StatusBoard
         void printStatus();
         void setBeam();
         void printBeam();
-				void setattack(bool _att);
-				bool getattack();
 };
 
 #endif

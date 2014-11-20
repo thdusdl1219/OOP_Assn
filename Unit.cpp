@@ -33,6 +33,7 @@ int Unit::getcol()
 {
 	return cell->getcol();
 }
+/* 유닛을 스왑할 떄 쓰이는 함수, 두 셀을 서로 스왑하고 row와 col만 다시 지정해준다. */
 void Unit::swap(Cell*& _a, Cell*& _b)
 {
 	int tmprowb;
@@ -63,7 +64,7 @@ void Unit::swap(Cell*& _a, Cell*& _b)
 	}	
 }
 
-void Unit::UnitMove()
+void Unit::UnitMove() // 유닛이 움직이는 경우를 처리하는 함수
 {
 	string input;
 	while(1)

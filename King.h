@@ -11,8 +11,10 @@ class King : public Unit
     public:
         King (Cell* _cell, Board* b); // 왕을 초기화한다.
         virtual bool get_enable();
-        virtual void set_enable(bool);
+        void set_enable(bool);
 				virtual int control_unit();
+				virtual void printUnit(char[18][18]);
+				virtual Cell* beamCurUnit();	
 };
 
 #endif

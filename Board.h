@@ -19,14 +19,14 @@ class Board
         Cell* cell[81];
 				Unit* king[2];
         StatusBoard* status;
+				bool attack;
+				
+				bool getattack();
+				void setattack(bool);
+
         void initGame();
         Cell* launchLaser(Cell* _startcell);
         Cell* beamCurCell(Cell* _cell);
-//        void swap(Cell*& _a, Cell*& _b);
-				void Stun(Cell* _cell);
-//				void UnitMove(Cell** curcell);
-				int Rotate_only(Cell** curcell);
-				void Rotate(Cell** curcell);
 				Cell* choiceLaser();
         void showBoard();
         void showBeam();
