@@ -495,10 +495,8 @@ bool Board::testFile(std::ifstream& file)
 	file.clear();
 	file.seekg(0, file.beg);
 
-	while(!file.eof())
+	while(file.getline(buf,46))
 	{
-
-		file.getline(buf, 46);
 		if(j != 9)
 		{
 			if(strlen(buf) != 45)
